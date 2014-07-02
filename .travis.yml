@@ -1,0 +1,4 @@
+language: java
+script: "mvn -f propertiesBundle/pom.xml clean install"
+notifications:
+  email: false
