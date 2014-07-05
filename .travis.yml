@@ -1,5 +1,5 @@
 language: java
-script: "mvn -f common-utils-test1/pom.xml clean install"
+script: "mvn -f common-utils-test2/pom.xml clean install"
 notifications:
   email:
     recipients:
