@@ -13,6 +13,6 @@ package com.sanjay.common.constants;
  * @author SANJAY
  * 
  */
-public class CommonConstants { 
+public final class CommonConstants { 
 
 }
