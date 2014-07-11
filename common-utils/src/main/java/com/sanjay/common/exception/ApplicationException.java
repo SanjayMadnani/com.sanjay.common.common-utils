@@ -16,8 +16,40 @@ package com.sanjay.common.exception;
 public class ApplicationException extends Exception {
 
     /**
-     * 
+     * serialVersionUID unique key.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 565698485L;
+    /**
+     * error bundle key.
+     */
+    private transient String errorKey;
+    /**
+     * The error severity.
+     */
+    private transient ApplicationSeverity severity;
+    /**
+     * Specific error Info.
+     */
+    private transient String[] params;
+    /**
+     * Specific error Info.
+     */
+    private transient Object[] objects;
+
+    /**
+     * Instantiate an ApplicationException
+     * 
+     * @param errorKey String bundle key for retrieving error message.
+     * @param severity severity of the Exception.
+     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A <tt>null</tt>
+     *            value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param params array of string for error info.
+     */
+    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, String[] params) {
+        super(cause);
+        this.errorKey = errorKey;
+        this.severity = severity;
+        this.params = params;
+    }
 
 }
