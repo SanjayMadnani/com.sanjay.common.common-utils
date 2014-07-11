@@ -1,9 +1,9 @@
 language: java
 script: "mvn -f common-utils/pom.xml clean install"
-notifications:
-  email:
-    recipients:
-      - sanjay.madnani@outlook.com
-      - sushilmadnani@gmail.com
-    on_success: [change] # default: change
-    on_failure: [change] # options: [always|never|change]
+#notifications:
+# email:
+#    recipients:
+#      - sanjay.madnani@outlook.com
+#      - sushilmadnani@gmail.com
+#    on_success: [change] # default: change
+#    on_failure: [change] # options: [always|never|change]
