@@ -23,6 +23,8 @@ public class ApplicationException extends Exception {
      * error bundle key.
      */
     private transient String errorKey;
+    
+    private Integer errorCode;
     /**
      * The error severity.
      */
@@ -45,7 +47,7 @@ public class ApplicationException extends Exception {
      *            value is permitted, and indicates that the cause is nonexistent or unknown.)
      * @param params array of string for error info.
      */
-    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, String[] params) {
+    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, String ...params) {
         super(cause);
         this.errorKey = errorKey;
         this.severity = severity;
@@ -57,7 +59,7 @@ public class ApplicationException extends Exception {
      * @param severity
      * @param objects
      */
-    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, Object[] objects) {
+    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, Object ...objects) {
         super(cause);
         this.errorKey = errorKey;
         this.severity = severity;
@@ -74,6 +76,103 @@ public class ApplicationException extends Exception {
         this.severity = severity;
     }
     
+    /**
+     * 
+     * @param errorCode
+     * @param severity
+     * @param cause
+     * @param objects
+     */
+    public ApplicationException(int errorCode, ApplicationSeverity severity, Throwable cause, Object ...objects) {
+        super(cause);
+        this.errorCode = errorCode;
+        this.severity = severity;
+        this.objects = objects;
+    }
     
+    /**
+     * 
+     * @param errorKey
+     * @param severity
+     */
+    public ApplicationException(String errorKey, ApplicationSeverity severity) {
+        this(errorKey, severity, null, (String[])null);
+    }
+    
+    /**
+     * 
+     * @param errorCode
+     * @param severity
+     */
+    public ApplicationException(int errorCode, ApplicationSeverity severity) {
+        this(errorCode, severity, null, (Object[])null);
+    }
+    
+    /**
+     * 
+     * @param errorCode
+     * @param throwable
+     */
+    public ApplicationException(int errorCode, Throwable throwable) {
+        this(errorCode, null, throwable, (Object[])null);
+    }
+    
+    /**
+     * 
+     * @param errorKey
+     */
+    public ApplicationException(String errorKey) {
+        this(errorKey, null, null, (String[])null);
+    }
+
+    /**
+     * @return the errorCode
+     */
+    public Integer getErrorCode() {
+        return errorCode;
+    }
+
+    /**
+     * @param errorCode the errorCode to set
+     */
+    public void setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    /**
+     * @return the errorKey
+     */
+    public String getErrorKey() {
+        return errorKey;
+    }
+
+    /**
+     * @return the severity
+     */
+    public ApplicationSeverity getSeverity() {
+        return severity;
+    }
+
+    /**
+     * @return the params
+     */
+    public String[] getParams() {
+        return params;
+    }
+
+    /**
+     * @return the objects
+     */
+    public Object[] getObjects() {
+        return objects;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return null;
+    }
 
 }
