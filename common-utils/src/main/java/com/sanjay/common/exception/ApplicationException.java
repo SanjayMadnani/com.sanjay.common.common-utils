@@ -52,4 +52,28 @@ public class ApplicationException extends Exception {
         this.params = params;
     }
 
+    /**
+     * @param errorKey
+     * @param severity
+     * @param objects
+     */
+    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, Object[] objects) {
+        super(cause);
+        this.errorKey = errorKey;
+        this.severity = severity;
+        this.objects = objects;
+    }
+
+    /**
+     * @param errorKey
+     * @param severity
+     */
+    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause) {
+        super(cause);
+        this.errorKey = errorKey;
+        this.severity = severity;
+    }
+    
+    
+
 }
