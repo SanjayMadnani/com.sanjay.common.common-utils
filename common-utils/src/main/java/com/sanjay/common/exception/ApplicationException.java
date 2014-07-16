@@ -202,8 +202,27 @@ public class ApplicationException extends Exception {
      * @see java.lang.Object#toString() */
     @Override
     public String toString() {
-        // TODO Modification Required.
-        return null;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER1);
+        buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER2);
+        buffer.append(this.errorKey);
+        buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER3);
+        buffer.append(this.severity);
+        buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER4);
+        if (this.getCause() == CommonConstants.NULL) {
+            buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER5);
+        } else {
+            buffer.append(this.getCause().toString());
+        }
+        if (this.params != CommonConstants.NULL && this.params.length > 0) {
+            buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER6);
+            buffer.append(Arrays.toString(this.params));
+        }
+        if (this.objects != CommonConstants.NULL && this.objects.length > 0) {
+            buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER6);
+            buffer.append(this.objects);
+        }
+        return buffer.toString();
     }
 
 }
