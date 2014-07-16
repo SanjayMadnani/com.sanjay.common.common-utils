@@ -9,6 +9,10 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.exception;
 
+import java.util.Arrays;
+
+import com.sanjay.common.constants.CommonConstants;
+
 /**
  * @author SANJAY
  * 
@@ -23,7 +27,7 @@ public class ApplicationException extends Exception {
      * error bundle key.
      */
     private transient String errorKey;
-    
+
     private Integer errorCode;
     /**
      * The error severity.
@@ -39,7 +43,7 @@ public class ApplicationException extends Exception {
     private transient Object[] objects;
 
     /**
-     * Instantiate an ApplicationException
+     * Instantiate an ApplicationException.
      * 
      * @param errorKey String bundle key for retrieving error message.
      * @param severity severity of the Exception.
@@ -47,7 +51,8 @@ public class ApplicationException extends Exception {
      *            value is permitted, and indicates that the cause is nonexistent or unknown.)
      * @param params array of string for error info.
      */
-    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, String ...params) {
+    public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
+            final String... params) {
         super(cause);
         this.errorKey = errorKey;
         this.severity = severity;
@@ -55,11 +60,16 @@ public class ApplicationException extends Exception {
     }
 
     /**
-     * @param errorKey
-     * @param severity
-     * @param objects
+     * Instantiate an ApplicationException.
+     * 
+     * @param errorKey String bundle key for retrieving error message.
+     * @param severity severity of the Exception.
+     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A <tt>null</tt>
+     *            value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param objects array of objects for error info.
      */
-    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause, Object ...objects) {
+    public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
+            final Object... objects) {
         super(cause);
         this.errorKey = errorKey;
         this.severity = severity;
@@ -67,62 +77,74 @@ public class ApplicationException extends Exception {
     }
 
     /**
-     * @param errorKey
-     * @param severity
+     * Instantiate an ApplicationException.
+     * 
+     * @param errorKey String bundle key for retrieving error message.
+     * @param severity severity of the Exception.
+     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A <tt>null</tt>
+     *            value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public ApplicationException(String errorKey, ApplicationSeverity severity, Throwable cause) {
+    public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause) {
         super(cause);
         this.errorKey = errorKey;
         this.severity = severity;
     }
-    
+
     /**
+     * Instantiate an ApplicationException.
      * 
-     * @param errorCode
-     * @param severity
-     * @param cause
-     * @param objects
+     * @param errorCode int bundle code for retrieving error message.
+     * @param severity severity of the Exception.
+     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A <tt>null</tt>
+     *            value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param objects array of objects for error info.
      */
-    public ApplicationException(int errorCode, ApplicationSeverity severity, Throwable cause, Object ...objects) {
+    public ApplicationException(final int errorCode, final ApplicationSeverity severity, final Throwable cause,
+            final Object... objects) {
         super(cause);
         this.errorCode = errorCode;
         this.severity = severity;
         this.objects = objects;
     }
-    
+
     /**
+     * Instantiate an ApplicationException.
      * 
-     * @param errorKey
-     * @param severity
+     * @param errorKey String bundle key for retrieving error message.
+     * @param severity severity of the Exception.
      */
-    public ApplicationException(String errorKey, ApplicationSeverity severity) {
-        this(errorKey, severity, null, (String[])null);
+    public ApplicationException(final String errorKey, final ApplicationSeverity severity) {
+        this(errorKey, severity, null, (String[]) null);
     }
-    
+
     /**
+     * Instantiate an ApplicationException.
      * 
-     * @param errorCode
-     * @param severity
+     * @param errorCode int bundle code for retrieving error message.
+     * @param severity severity of the Exception.
      */
-    public ApplicationException(int errorCode, ApplicationSeverity severity) {
-        this(errorCode, severity, null, (Object[])null);
+    public ApplicationException(final int errorCode, final ApplicationSeverity severity) {
+        this(errorCode, severity, null, (Object[]) null);
     }
-    
+
     /**
+     * Instantiate an ApplicationException.
      * 
-     * @param errorCode
-     * @param throwable
+     * @param errorCode int bundle code for retrieving error message.
+     * @param throwable the cause (which is saved for later retrieval by the {@link #getCause()} method). (A
+     *            <tt>null</tt> value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public ApplicationException(int errorCode, Throwable throwable) {
-        this(errorCode, null, throwable, (Object[])null);
+    public ApplicationException(final int errorCode, final Throwable throwable) {
+        this(errorCode, null, throwable, (Object[]) null);
     }
-    
+
     /**
+     * Instantiate an ApplicationException.
      * 
-     * @param errorKey
+     * @param errorKey String bundle key for retrieving error message.
      */
-    public ApplicationException(String errorKey) {
-        this(errorKey, null, null, (String[])null);
+    public ApplicationException(final String errorKey) {
+        this(errorKey, null, null, (String[]) null);
     }
 
     /**
@@ -157,21 +179,30 @@ public class ApplicationException extends Exception {
      * @return the params
      */
     public String[] getParams() {
-        return params;
+        if (params == CommonConstants.NULL) {
+            return new String[0];
+        } else {
+            return Arrays.copyOf(params, params.length);
+        }
     }
 
     /**
      * @return the objects
      */
     public Object[] getObjects() {
-        return objects;
+        if (objects == CommonConstants.NULL) {
+            return new Object[0];
+        } else {
+            return Arrays.copyOf(objects, objects.length);
+        }
     }
 
     /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+     * 
+     * @see java.lang.Object#toString() */
     @Override
     public String toString() {
+        // TODO Modification Required.
         return null;
     }
 

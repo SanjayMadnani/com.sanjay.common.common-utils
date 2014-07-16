@@ -13,6 +13,15 @@ package com.sanjay.common.constants;
  * @author SANJAY
  * 
  */
-public final class CommonConstants { 
+public final class CommonConstants {
+    
+    public static final Object NULL = null;
+    
+    public static final String EXCEPTION_STRING_APPENDER1 = "ApplicationRuntimeException: ";
+    public static final String EXCEPTION_STRING_APPENDER2 = "Errorkey: ";
+    public static final String EXCEPTION_STRING_APPENDER3 = ". Severity: ";
+    public static final String EXCEPTION_STRING_APPENDER4 = ". Root Cause: ";
+    public static final String EXCEPTION_STRING_APPENDER5 = "null";
+    public static final String EXCEPTION_STRING_APPENDER6 = " Additional information associated to exception: ";
 
 }
