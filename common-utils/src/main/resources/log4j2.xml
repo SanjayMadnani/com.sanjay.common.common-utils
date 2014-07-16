@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="error" strict="true" name="XMLConfigTest"
+	packages="org.apache.logging.log4j.test">
+	<Properties>
+		<Property name="filename">./logs/application.log
+		</Property>
+		<Property name="rollingfilename">./logs/rolledOverLogs/application-%d{[yyyy-MM-dd_HH-mm-ss]}.log.gz
+		</Property>
+	</Properties>
 	<Appenders>
-		<RollingFile name="RollingFile" fileName="logs/app.log"
-			filePattern="logs/app-%d{MM-dd-yyyy}.log.gz" ignoreExceptions="false">
+		<RollingFile name="RollingFile" fileName="${filename}"
+			filePattern="${rollingfilename}" append="true">
 			<PatternLayout>
-				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+				<Pattern>%d{YYYY-MM-dd} %d{HH:mm:ss.SSS}
+					|${sys:hostName}-%35.35t|%-5p|%m%n</Pattern>
 			</PatternLayout>
 			<Policies>
-				<SizeBasedTriggeringPolicy size="2 KB" />
+				<SizeBasedTriggeringPolicy size="100 MB" />
 			</Policies>
-			<DefaultRolloverStrategy max="10" />
 		</RollingFile>
 
 		<Console name="Console" target="SYSTEM_OUT">
@@ -17,7 +24,7 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Root level="trace">
+		<Root level="error">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFile" />
 		</Root>
