@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -29,6 +32,7 @@ import com.jcraft.jsch.SftpException;
  * 
  */
 public final class FileUtil {
+    private static final Logger logger = LogManager.getLogger(FileUtil.class);
 
     /**
      * The number of bytes in a kilobyte.
