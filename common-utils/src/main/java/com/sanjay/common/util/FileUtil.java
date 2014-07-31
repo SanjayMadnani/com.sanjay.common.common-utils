@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,22 +38,27 @@ public final class FileUtil {
     /**
      * The number of bytes in a kilobyte.
      */
-    public static final long ONE_KB = 1024;
+    public static final int ONE_KB = 1024;
 
     /**
      * The number of bytes in a megabyte.
      */
-    public static final long ONE_MB = ONE_KB * ONE_KB;
+    public static final int ONE_MB = ONE_KB * ONE_KB;
 
     /**
      * The number of bytes in a gigabyte.
      */
     public static final long ONE_GB = ONE_KB * ONE_MB;
 
+    /**
+     * 
+     * @param file
+     * @return
+     */
     public static String getFileSize(File file) {
         if ( !file.exists() || !file.isFile()) {
             // TODO Exception or logger implementation pending.
-            System.out.println("File doesn\'t exist");
+            System.out.println("File doesn\'t exist: " + file.exists());
             return null;
         } else {
             long fileSize = file.length();
@@ -77,7 +83,7 @@ public final class FileUtil {
      *            : file to transfer
      * @throws IE2Exception
      */
-    private void transferFile(File file) throws Exception {
+    public void transferFile(File file) throws Exception {
         Session session = null;
         Channel channel = null;
         ChannelSftp channelSftp = null;
@@ -116,6 +122,37 @@ public final class FileUtil {
         }
     }
 
+    public static void compressToGzipFormat(final File inputFile, final File gzipOutputFile) {
+        try (final FileInputStream fis = new FileInputStream(inputFile);
+                final FileOutputStream fos = new FileOutputStream(gzipOutputFile);
+                final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
+            final byte[] buffer = new byte[ONE_KB];
+            int length;
+            while ((length = fis.read(buffer)) != -1) {
+                gzipOS.write(buffer, 0, length);
+            }
+        } catch (IOException e) {
+            // TODO Exception Handling and logging is pending.
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void decompressGzipFile(final File gzipFile, final File newFile) {
+        try (final FileInputStream fis = new FileInputStream(gzipFile);
+                final GZIPInputStream gis = new GZIPInputStream(fis);
+                final FileOutputStream fos = new FileOutputStream(newFile);) {
+            final byte[] buffer = new byte[ONE_KB];
+            int length;
+            while ((length = gis.read(buffer)) != -1) {
+                fos.write(buffer, 0, length);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * Archive file to local destination directory.
      * 
@@ -124,7 +161,7 @@ public final class FileUtil {
      * @throws IE2Exception
      *             e Checked exception thrown to indicate IE2 Error.
      */
-    public void archiveFile(File fileName, String destinationDir) throws Exception {
+    public static void archiveFile(File fileName, String destinationDir) throws Exception {
         FileOutputStream fos = null;
         GZIPOutputStream gos = null;
         FileInputStream fis = null;
@@ -134,7 +171,7 @@ public final class FileUtil {
         try {
             // String gzipDirectory = "./logs/archive/";
             String gzipDirectory = destinationDir;
-            fos = new FileOutputStream(gzipDirectory + fileName.getName() + ".gz");
+            fos = new FileOutputStream(gzipDirectory + "/" + fileName.getName() + ".gz");
             gos = new GZIPOutputStream(fos);
             fis = new FileInputStream(fileName);
             byte[] tmp = new byte[4 * 1024];
@@ -142,8 +179,8 @@ public final class FileUtil {
             while ((size = fis.read(tmp)) != -1) {
                 gos.write(tmp, 0, size);
             }
-            // fos.flush();
-            // gos.flush();
+            fos.flush();
+            gos.flush();
             gos.finish();
 
         } catch (IOException e) {
@@ -163,13 +200,13 @@ public final class FileUtil {
         }
     }
 
-    public boolean deleteIfExists(File file) {
+    public void deleteFile(File file) {
         System.out.println("Is File Directory: " + file.isDirectory());
         if ( !file.isDirectory()) {
-            System.out.println("file Delete: " + file.delete());
-            return true;
+            if (file.delete()) {
+                file.deleteOnExit();
+            }
         }
-        return false;
     }
 
 }

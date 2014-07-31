@@ -1,31 +1,33 @@
-/* Copyright (C) 2014, 2015 Sanjay Madnani
+/**
  * 
- * This file is free to use: you can redistribute it and/or modify it under the terms of the GPL General Public License
- * V2 as published by the Free Software Foundation, subject to the following conditions:
- * 
- * The above copyright notice should never be changed and should always included wherever this file is used.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
- * See the GNU General Public License V2 for more details. */
+ */
 package com.sanjay.common.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author SANJAY
+ * @author sanjay.madnani
  * 
  */
 public class FileUtilTest {
+
+    private File inputFile;
+    private File outputFile;
 
     /**
      * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
+        inputFile = new File("src/test/resources", "licence.txt");
+        outputFile = new File("src/test/resources", "Zlicence.txt.gz");
     }
 
     /**
@@ -33,10 +35,59 @@ public class FileUtilTest {
      */
     @After
     public void tearDown() throws Exception {
+        inputFile = null;
+        outputFile = null;
     }
 
-//    @Test
-    public final void test() {
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#getFileSize(java.io.File)}.
+     */
+    @Test
+    public final void testGetFileSize() {
+        assertEquals("17 KB", FileUtil.getFileSize(inputFile));
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#transferFile(java.io.File)}.
+     */
+    // @Test
+    public final void testTransferFile() {
+        // FTP Server required to test file transfer functionality.
+        fail("Not yet implemented");
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#compressToGzipFormat(java.io.File, java.io.File)}.
+     */
+    @Test
+    public final void testCompressToGzipFormat() {
+        FileUtil.compressToGzipFormat(inputFile, outputFile);
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#decompressGzipFile(java.io.File, java.io.File)}.
+     */
+    @Test
+    public final void testDecompressGzipFile() {
+        fail("Not yet implemented");
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#archiveFile(java.io.File, java.lang.String)}.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public final void testArchiveFile() throws Exception {
+        System.out.println(outputFile.getParent());
+        FileUtil.archiveFile(inputFile, outputFile.getParent());
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#deleteFile(java.io.File)}.
+     */
+    @Test
+    public final void testDeleteFile() {
         fail("Not yet implemented");
     }
 
