@@ -131,13 +131,12 @@ public final class FileUtil {
             while ((length = fis.read(buffer)) != -1) {
                 gzipOS.write(buffer, 0, length);
             }
-            return new File(gzipOutputDir + "/" + inputFile.getName() + ".gz");
+            return new File(gzipOutputDir, inputFile.getName() + ".gz");
         } catch (IOException e) {
             // TODO Exception Handling and logging is pending.
             e.printStackTrace();
             return null;
         }
-
     }
 
     public static void decompressGzipFile(final File gzipFile, final File newFile) {
@@ -151,54 +150,6 @@ public final class FileUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Archive file to local destination directory.
-     * 
-     * @param fileName
-     *            File instance.
-     * @throws IE2Exception
-     *             e Checked exception thrown to indicate IE2 Error.
-     */
-    public static void archiveFile(File fileName, String destinationDir) throws Exception {
-        FileOutputStream fos = null;
-        GZIPOutputStream gos = null;
-        FileInputStream fis = null;
-
-        // String currentTimeStamp = DateTimeFormat.forPattern ("YYYY-MM-DD.HH24MM").print (new DateTime ());
-
-        try {
-            // String gzipDirectory = "./logs/archive/";
-            String gzipDirectory = destinationDir;
-            fos = new FileOutputStream(gzipDirectory + "/" + fileName.getName() + ".gz");
-            gos = new GZIPOutputStream(fos);
-            fis = new FileInputStream(fileName);
-            byte[] tmp = new byte[4 * 1024];
-            int size = 0;
-            while ((size = fis.read(tmp)) != -1) {
-                gos.write(tmp, 0, size);
-            }
-            fos.flush();
-            gos.flush();
-            gos.finish();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-                if (gos != null) {
-                    gos.close();
-                }
-            } catch (IOException e) {
-                throw new Exception();
-            }
         }
     }
 

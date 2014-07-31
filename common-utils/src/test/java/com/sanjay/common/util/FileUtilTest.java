@@ -21,13 +21,22 @@ public class FileUtilTest {
     private File inputFile;
     private File outputFile;
 
+    private String inputFileDir;
+    private String inputFileName;
+    private String outputFileDir;
+    private String outputFileName;
+
     /**
      * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
-        inputFile = new File("src/test/resources", "licence.txt");
-        outputFile = new File("src/test/resources", "Zlicence.txt.gz");
+        inputFileDir = "src/test/resources/FileOperation";
+        inputFileName = "licence.txt";
+        outputFileDir = "src/test/resources/FileOperation";
+        outputFileName = "Zlicence.txt.gz";
+        inputFile = new File(inputFileDir, inputFileName);
+        outputFile = new File(outputFileDir, outputFileName);
     }
 
     /**
@@ -52,7 +61,7 @@ public class FileUtilTest {
      */
     // @Test
     public final void testTransferFile() {
-        // FTP Server required to test file transfer functionality.
+        // TODO FTP Server required to test file transfer functionality.
         fail("Not yet implemented");
     }
 
@@ -61,9 +70,8 @@ public class FileUtilTest {
      */
     @Test
     public final void testCompressToGzipFormat() {
-        final File file = FileUtil.compressToGzipFormat(inputFile, outputFile.getParent());
-        System.out.println(file.getName());
-        assertEquals(inputFile.getName() + ".gz", file.getName());
+        final File file = FileUtil.compressToGzipFormat(inputFile, outputFileDir);
+        assertEquals(inputFileName + ".gz", file.getName());
         assertEquals(outputFile.getParent(), file.getParent());
     }
 
@@ -76,23 +84,15 @@ public class FileUtilTest {
     }
 
     /**
-     * Test method for {@link com.sanjay.common.util.FileUtil#archiveFile(java.io.File, java.lang.String)}.
-     * 
-     * @throws Exception
-     */
-    @Test
-    public final void testArchiveFile() throws Exception {
-        System.out.println(outputFile.getParent());
-        FileUtil.archiveFile(inputFile, outputFile.getParent());
-    }
-
-    /**
      * Test method for {@link com.sanjay.common.util.FileUtil#deleteFile(java.io.File)}.
      */
-    // @Test
+    @Test
     public final void testDeleteFile() {
-        File file = new File(outputFile.getParent(), inputFile.getName() + ".gz");
-        FileUtil.deleteFile(file);
+        File file = new File(outputFileDir, inputFileName + ".gz");
+        if (file.exists()) {
+            FileUtil.deleteFile(file);
+            System.out.println(file.getName() + " deleted successfully");
+        }
     }
 
 }
