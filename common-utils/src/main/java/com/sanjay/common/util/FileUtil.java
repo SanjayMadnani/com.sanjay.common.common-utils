@@ -122,18 +122,20 @@ public final class FileUtil {
         }
     }
 
-    public static void compressToGzipFormat(final File inputFile, final File gzipOutputFile) {
+    public static File compressToGzipFormat(final File inputFile, final String gzipOutputDir) {
         try (final FileInputStream fis = new FileInputStream(inputFile);
-                final FileOutputStream fos = new FileOutputStream(gzipOutputFile);
+                final FileOutputStream fos = new FileOutputStream(gzipOutputDir + "/" + inputFile.getName() + ".gz");
                 final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
             final byte[] buffer = new byte[ONE_KB];
             int length;
             while ((length = fis.read(buffer)) != -1) {
                 gzipOS.write(buffer, 0, length);
             }
+            return new File(gzipOutputDir + "/" + inputFile.getName() + ".gz");
         } catch (IOException e) {
             // TODO Exception Handling and logging is pending.
             e.printStackTrace();
+            return null;
         }
 
     }
@@ -200,7 +202,7 @@ public final class FileUtil {
         }
     }
 
-    public void deleteFile(File file) {
+    public static void deleteFile(File file) {
         System.out.println("Is File Directory: " + file.isDirectory());
         if ( !file.isDirectory()) {
             if (file.delete()) {
