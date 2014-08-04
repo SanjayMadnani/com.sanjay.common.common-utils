@@ -27,6 +27,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import com.sanjay.common.constants.CommonConstants;
 
 /**
  * @author SANJAY
@@ -35,20 +36,16 @@ import com.jcraft.jsch.SftpException;
 public final class FileUtil {
     private static final Logger logger = LogManager.getLogger(FileUtil.class);
 
-    /**
-     * The number of bytes in a kilobyte.
-     */
-    public static final int ONE_KB = 1024;
-
-    /**
-     * The number of bytes in a megabyte.
-     */
-    public static final int ONE_MB = ONE_KB * ONE_KB;
-
-    /**
-     * The number of bytes in a gigabyte.
-     */
-    public static final long ONE_GB = ONE_KB * ONE_MB;
+    private static boolean isValidOperation(File file) {
+        logger.trace("Invoking isValidOperation...");
+        if (file != null && file.exists() && file.isFile() && file.canExecute()) {
+            logger.debug("File " + file.getName() + " is Valid to perform Operation.");
+            return true;
+        } else {
+            logger.error("File is invalid to perform operation.");
+            return false;
+        }
+    }
 
     /**
      * 
@@ -56,22 +53,20 @@ public final class FileUtil {
      * @return
      */
     public static String getFileSize(File file) {
-        if ( !file.exists() || !file.isFile()) {
-            // TODO Exception or logger implementation pending.
-            System.out.println("File doesn\'t exist: " + file.exists());
-            return null;
-        } else {
+        if (isValidOperation(file)) {
             long fileSize = file.length();
-            if (fileSize / ONE_GB > 0) {
-                return String.valueOf(fileSize / ONE_GB) + " GB";
-            } else if (fileSize / ONE_MB > 0) {
-                return String.valueOf(fileSize / ONE_MB) + " MB";
-            } else if (fileSize / ONE_KB > 0) {
-                return String.valueOf(fileSize / ONE_KB) + " KB";
+            if (fileSize / CommonConstants.ONE_GB > 0) {
+                return String.valueOf(fileSize / CommonConstants.ONE_GB) + " " + CommonConstants.GB;
+            } else if (fileSize / CommonConstants.ONE_MB > 0) {
+                return String.valueOf(fileSize / CommonConstants.ONE_MB) + " " + CommonConstants.MB;
+            } else if (fileSize / CommonConstants.ONE_KB > 0) {
+                return String.valueOf(fileSize / CommonConstants.ONE_KB) + " " + CommonConstants.KB;
             } else {
-                return String.valueOf(fileSize) + " bytes";
+                return String.valueOf(fileSize) + " " + CommonConstants.BYTES;
             }
-
+        } else {
+            // TODO Modification required.
+            return null;
         }
 
     }
@@ -126,7 +121,7 @@ public final class FileUtil {
         try (final FileInputStream fis = new FileInputStream(inputFile);
                 final FileOutputStream fos = new FileOutputStream(gzipOutputDir + "/" + inputFile.getName() + ".gz");
                 final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
-            final byte[] buffer = new byte[ONE_KB];
+            final byte[] buffer = new byte[CommonConstants.ONE_KB];
             int length;
             while ((length = fis.read(buffer)) != -1) {
                 gzipOS.write(buffer, 0, length);
@@ -143,7 +138,7 @@ public final class FileUtil {
         try (final FileInputStream fis = new FileInputStream(gzipFile);
                 final GZIPInputStream gis = new GZIPInputStream(fis);
                 final FileOutputStream fos = new FileOutputStream(newFile);) {
-            final byte[] buffer = new byte[ONE_KB];
+            final byte[] buffer = new byte[CommonConstants.ONE_KB];
             int length;
             while ((length = gis.read(buffer)) != -1) {
                 fos.write(buffer, 0, length);

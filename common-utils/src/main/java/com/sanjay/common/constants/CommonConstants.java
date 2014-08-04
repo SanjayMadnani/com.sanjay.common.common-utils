@@ -14,9 +14,18 @@ package com.sanjay.common.constants;
  * 
  */
 public final class CommonConstants {
-    
+
     public static final Object NULL = null;
-    
+
+    public static final Integer ONE_KB = 1024;
+    public static final Integer ONE_MB = ONE_KB * ONE_KB;
+    public static final long ONE_GB = ONE_KB * ONE_MB;
+    public static final String KB = "KB";
+    public static final String MB = "MB";
+    public static final String GB = "GB";
+    public static final String BYTES = "bytes";
+
+    // Exception Messages
     public static final String EXCEPTION_STRING_APPENDER1 = "ApplicationRuntimeException: ";
     public static final String EXCEPTION_STRING_APPENDER2 = "Errorkey: ";
     public static final String EXCEPTION_STRING_APPENDER3 = ". Severity: ";
