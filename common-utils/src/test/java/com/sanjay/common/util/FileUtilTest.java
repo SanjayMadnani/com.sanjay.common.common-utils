@@ -53,7 +53,9 @@ public class FileUtilTest {
      */
     @Test
     public final void testGetFileSize() {
-        assertEquals("17 KB", FileUtil.getFileSize(inputFile));
+        String fileSize = FileUtil.getFileSize(inputFile);
+        if (fileSize != null)
+            assertEquals("17 KB", fileSize);
     }
 
     /**
@@ -69,7 +71,7 @@ public class FileUtilTest {
      * Test method for {@link com.sanjay.common.util.FileUtil#compressToGzipFormat(java.io.File, java.io.File)}.
      */
     @Test
-    public final void testCompressToGzipFormat() {
+    public final void testCompressToGzipFormat() throws Exception {
         final File file = FileUtil.compressToGzipFormat(inputFile, outputFileDir);
         assertEquals(inputFileName + ".gz", file.getName());
         assertEquals(outputFile.getParent(), file.getParent());

@@ -28,6 +28,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.sanjay.common.constants.CommonConstants;
+import com.sanjay.common.exception.ApplicationException;
+import com.sanjay.common.exception.ApplicationSeverity;
 
 /**
  * @author SANJAY
@@ -39,7 +41,7 @@ public final class FileUtil {
     private static boolean isValidOperation(File file) {
         logger.trace("Invoking isValidOperation...");
         if (file != null && file.exists() && file.isFile() && file.canExecute()) {
-            logger.debug("File " + file.getName() + " is Valid to perform Operation.");
+            logger.trace("File " + file.getName() + " is Valid to perform Operation.");
             return true;
         } else {
             logger.error("File is invalid to perform operation.");
@@ -53,6 +55,7 @@ public final class FileUtil {
      * @return
      */
     public static String getFileSize(File file) {
+        logger.trace("Invoking getFileSize...");
         if (isValidOperation(file)) {
             long fileSize = file.length();
             if (fileSize / CommonConstants.ONE_GB > 0) {
@@ -65,10 +68,62 @@ public final class FileUtil {
                 return String.valueOf(fileSize) + " " + CommonConstants.BYTES;
             }
         } else {
-            // TODO Modification required.
             return null;
         }
 
+    }
+
+    public static File compressToGzipFormat(final File inputFile, final String gzipOutputDir)
+        throws ApplicationException {
+        logger.trace("Invoking compressToGzipFormat...");
+        // TODO Constants should be maintained in constant file.
+        try (final FileInputStream fis = new FileInputStream(inputFile);
+                final FileOutputStream fos = new FileOutputStream(gzipOutputDir + "/" + inputFile.getName() + ".gz");
+                final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
+            final byte[] buffer = new byte[CommonConstants.ONE_KB];
+            int length;
+            while ((length = fis.read(buffer)) != -1) {
+                gzipOS.write(buffer, 0, length);
+            }
+            logger.debug(inputFile.getName() + ".gz is created in Dir: " + gzipOutputDir);
+            return new File(gzipOutputDir, inputFile.getName() + ".gz");
+        } catch (IOException e) {
+            // TODO Exception Handling should be modified.
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException("", ApplicationSeverity.ERROR, e, inputFile, gzipOutputDir);
+        }
+    }
+
+    public static File decompressGzipFile(final File gzipFile, final String fileOutputDir) throws ApplicationException {
+        logger.trace("Invoking decompressGzipFile...");
+        try (final FileInputStream fis = new FileInputStream(gzipFile);
+                final GZIPInputStream gis = new GZIPInputStream(fis);
+                final FileOutputStream fos = new FileOutputStream(fileOutputDir);) {
+            final byte[] buffer = new byte[CommonConstants.ONE_KB];
+            int length;
+            while ((length = gis.read(buffer)) != -1) {
+                fos.write(buffer, 0, length);
+            }
+            logger.debug(gzipFile.getName() + " File decompressed to dir: " + fileOutputDir);
+            // TODO Constants should be in constants file
+            return new File(fileOutputDir, gzipFile.getName().replaceAll("(.gz)$", ""));
+        } catch (IOException e) {
+            // TODO Exception Handling should be modified.
+            logger.error(e.getMessage(), e);
+            throw new ApplicationException("", ApplicationSeverity.ERROR, e, gzipFile, fileOutputDir);
+        }
+    }
+
+    public static void deleteFile(File file) {
+        logger.trace("Invoking deleteFile...");
+        if (isValidOperation(file)) {
+            if ( !file.delete()) {
+                logger.debug(file.getName() + " File will delete on exit");
+                file.deleteOnExit();
+            } else {
+                logger.debug(file.getName() + " File is deleted successfully");
+            }
+        }
     }
 
     /**
@@ -82,8 +137,8 @@ public final class FileUtil {
         Session session = null;
         Channel channel = null;
         ChannelSftp channelSftp = null;
-        final String USER = "sanjay";// logMonitorProperties.getProperty (FTP_USERNAME);
-        final String HOST = "10.14.76.187";// logMonitorProperties.getProperty (DESTINATION_HOST);
+        final String USER = "sanjay";// TODO retrieve from properties : getProperty (FTP_USERNAME);
+        final String HOST = "10.14.76.187";// TODO retrieve from properties : getProperty (DESTINATION_HOST);
         try {
             JSch jsch = new JSch();
             session = jsch.getSession(USER, HOST);
@@ -113,46 +168,6 @@ public final class FileUtil {
             }
             if (session != null) {
                 session.disconnect();
-            }
-        }
-    }
-
-    public static File compressToGzipFormat(final File inputFile, final String gzipOutputDir) {
-        try (final FileInputStream fis = new FileInputStream(inputFile);
-                final FileOutputStream fos = new FileOutputStream(gzipOutputDir + "/" + inputFile.getName() + ".gz");
-                final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
-            final byte[] buffer = new byte[CommonConstants.ONE_KB];
-            int length;
-            while ((length = fis.read(buffer)) != -1) {
-                gzipOS.write(buffer, 0, length);
-            }
-            return new File(gzipOutputDir, inputFile.getName() + ".gz");
-        } catch (IOException e) {
-            // TODO Exception Handling and logging is pending.
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void decompressGzipFile(final File gzipFile, final File newFile) {
-        try (final FileInputStream fis = new FileInputStream(gzipFile);
-                final GZIPInputStream gis = new GZIPInputStream(fis);
-                final FileOutputStream fos = new FileOutputStream(newFile);) {
-            final byte[] buffer = new byte[CommonConstants.ONE_KB];
-            int length;
-            while ((length = gis.read(buffer)) != -1) {
-                fos.write(buffer, 0, length);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void deleteFile(File file) {
-        System.out.println("Is File Directory: " + file.isDirectory());
-        if ( !file.isDirectory()) {
-            if (file.delete()) {
-                file.deleteOnExit();
             }
         }
     }
