@@ -11,6 +11,9 @@ package com.sanjay.common.exception;
 
 import java.util.Arrays;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sanjay.common.constants.CommonConstants;
 
 /**
@@ -23,6 +26,8 @@ public class ApplicationException extends Exception {
      * serialVersionUID unique key.
      */
     private static final long serialVersionUID = 565698485L;
+
+    private static final Logger logger = LogManager.getLogger(ApplicationException.class);
     /**
      * error bundle key.
      */
@@ -54,6 +59,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
             final String... params) {
         super(cause);
+        logger.trace("Invoking Application Exception with Parameters...", errorKey, severity, cause, params);
         this.errorKey = errorKey;
         this.severity = severity;
         this.params = params;
@@ -71,6 +77,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
             final Object... objects) {
         super(cause);
+        logger.trace("Invoking Application Exception with Parameters...", errorKey, severity, cause, objects);
         this.errorKey = errorKey;
         this.severity = severity;
         this.objects = objects;
@@ -86,6 +93,7 @@ public class ApplicationException extends Exception {
      */
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause) {
         super(cause);
+        logger.trace("Invoking Application Exception with Parameters...", errorKey, severity, cause);
         this.errorKey = errorKey;
         this.severity = severity;
     }
@@ -102,6 +110,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final int errorCode, final ApplicationSeverity severity, final Throwable cause,
             final Object... objects) {
         super(cause);
+        logger.trace("Invoking Application Exception with Parameters...", errorCode, severity, cause, objects);
         this.errorCode = errorCode;
         this.severity = severity;
         this.objects = objects;
@@ -202,6 +211,7 @@ public class ApplicationException extends Exception {
      * @see java.lang.Object#toString() */
     @Override
     public String toString() {
+        logger.trace("Invoking Application toString...");
         StringBuffer buffer = new StringBuffer();
         buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER1);
         buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER2);
