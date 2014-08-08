@@ -4,7 +4,7 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -31,9 +31,9 @@ public class FileUtilTest {
      */
     @Before
     public void setUp() throws Exception {
-        inputFileDir = "src/test/resources/FileOperation";
+        inputFileDir = "src\\test\\resources\\FileOperation";
         inputFileName = "licence.txt";
-        outputFileDir = "src/test/resources/FileOperation";
+        outputFileDir = "src\\test\\resources\\FileOperation";
         outputFileName = "Zlicence.txt.gz";
         inputFile = new File(inputFileDir, inputFileName);
         outputFile = new File(outputFileDir, outputFileName);
@@ -54,8 +54,8 @@ public class FileUtilTest {
     @Test
     public final void testGetFileSize() {
         String fileSize = FileUtil.getFileSize(inputFile);
-        if (fileSize != null)
-            assertEquals("17 KB", fileSize);
+        System.out.println("File Size: " + fileSize);
+        assertEquals("17 KB", fileSize);
     }
 
     /**
@@ -91,10 +91,8 @@ public class FileUtilTest {
     @Test
     public final void testDeleteFile() {
         File file = new File(outputFileDir, inputFileName + ".gz");
-        if (file.exists()) {
-            FileUtil.deleteFile(file);
-            System.out.println(file.getName() + " deleted successfully");
-        }
+        FileUtil.deleteFile(file);
+        System.out.println(file.getName() + " deleted successfully");
     }
 
 }
