@@ -76,9 +76,10 @@ public final class FileUtil {
     public static File compressToGzipFormat(final File inputFile, final String gzipOutputDir)
         throws ApplicationException {
         logger.trace("Invoking compressToGzipFormat...");
-        // TODO Constants should be maintained in constant file.
         try (final FileInputStream fis = new FileInputStream(inputFile);
-                final FileOutputStream fos = new FileOutputStream(gzipOutputDir + "/" + inputFile.getName() + ".gz");
+                final FileOutputStream fos =
+                        new FileOutputStream(gzipOutputDir + CommonConstants.FORWARD_SLASH + inputFile.getName() +
+                                CommonConstants.GZ);
                 final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
             final byte[] buffer = new byte[CommonConstants.ONE_KB];
             int length;
@@ -86,7 +87,7 @@ public final class FileUtil {
                 gzipOS.write(buffer, 0, length);
             }
             logger.debug(inputFile.getName() + ".gz is created in Dir: " + gzipOutputDir);
-            return new File(gzipOutputDir, inputFile.getName() + ".gz");
+            return new File(gzipOutputDir, inputFile.getName() + CommonConstants.GZ);
         } catch (IOException e) {
             // TODO Exception Handling should be modified.
             logger.error(e.getMessage(), e);
@@ -98,7 +99,8 @@ public final class FileUtil {
         logger.trace("Invoking decompressGzipFile...");
         try (final FileInputStream fis = new FileInputStream(gzipFile);
                 final GZIPInputStream gis = new GZIPInputStream(fis);
-                final FileOutputStream fos = new FileOutputStream(fileOutputDir);) {
+                final FileOutputStream fos =
+                        new FileOutputStream(new File(fileOutputDir, gzipFile.getName().replaceAll("(.gz)$", "")));) {
             final byte[] buffer = new byte[CommonConstants.ONE_KB];
             int length;
             while ((length = gis.read(buffer)) != -1) {

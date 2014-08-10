@@ -4,13 +4,16 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.sanjay.common.constants.CommonConstants;
+import com.sanjay.common.exception.ApplicationException;
 
 /**
  * @author sanjay.madnani
@@ -31,9 +34,9 @@ public class FileUtilTest {
      */
     @Before
     public void setUp() throws Exception {
-        inputFileDir = "src\\test\\resources\\FileOperation";
+        inputFileDir = "src/test/resources/FileOperation";
         inputFileName = "licence.txt";
-        outputFileDir = "src\\test\\resources\\FileOperation";
+        outputFileDir = "src/test/resources/FileOperation";
         outputFileName = "Zlicence.txt.gz";
         inputFile = new File(inputFileDir, inputFileName);
         outputFile = new File(outputFileDir, outputFileName);
@@ -79,10 +82,18 @@ public class FileUtilTest {
 
     /**
      * Test method for {@link com.sanjay.common.util.FileUtil#decompressGzipFile(java.io.File, java.io.File)}.
+     * 
+     * @throws ApplicationException
      */
-    // @Test
-    public final void testDecompressGzipFile() {
-        fail("Not yet implemented");
+    @Test
+    public final void testDecompressGzipFile() throws ApplicationException {
+        File gZipFile = new File(outputFileDir, inputFileName + CommonConstants.GZ);
+        if (gZipFile.exists()) {
+            File outputFile = FileUtil.decompressGzipFile(gZipFile, outputFileDir);
+            assertNotNull(outputFile);
+            assertTrue(outputFile.exists());
+            System.out.println("Decompressed successfully");
+        }
     }
 
     /**

@@ -59,7 +59,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
             final String... params) {
         super(cause);
-        logger.trace("Invoking Application Exception with Parameters...", errorKey, severity, cause, params);
+        logger.trace("Invoking Application Exception with Parameters: ", errorKey, severity, cause, params);
         this.errorKey = errorKey;
         this.severity = severity;
         this.params = params;
@@ -93,7 +93,7 @@ public class ApplicationException extends Exception {
      */
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause) {
         super(cause);
-        logger.trace("Invoking Application Exception with Parameters...", errorKey, severity, cause);
+        logger.trace("Invoking Application Exception with Parameters...", errorKey, severity);
         this.errorKey = errorKey;
         this.severity = severity;
     }
@@ -110,7 +110,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final int errorCode, final ApplicationSeverity severity, final Throwable cause,
             final Object... objects) {
         super(cause);
-        logger.trace("Invoking Application Exception with Parameters...", errorCode, severity, cause, objects);
+        logger.trace("Invoking Application Exception with Parameters...", errorCode, severity, objects);
         this.errorCode = errorCode;
         this.severity = severity;
         this.objects = objects;

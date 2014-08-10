@@ -24,6 +24,8 @@ public final class CommonConstants {
     public static final String MB = "MB";
     public static final String GB = "GB";
     public static final String BYTES = "bytes";
+    public static final String FORWARD_SLASH = "/";
+    public static final String GZ = ".gz";
 
     // Exception Messages
     public static final String EXCEPTION_STRING_APPENDER1 = "ApplicationRuntimeException: ";
