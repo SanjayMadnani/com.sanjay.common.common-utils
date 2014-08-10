@@ -40,7 +40,7 @@ public final class FileUtil {
 
     private static boolean isValidOperation(File file) {
         logger.trace("Invoking isValidOperation...");
-        if (file != null && file.exists() && file.isFile() && file.canExecute()) {
+        if (file != null && file.exists() && file.isFile()) {
             logger.trace("File " + file.getName() + " is Valid to perform Operation.");
             return true;
         } else {
@@ -107,7 +107,6 @@ public final class FileUtil {
                 fos.write(buffer, 0, length);
             }
             logger.debug(gzipFile.getName() + " File decompressed to dir: " + fileOutputDir);
-            // TODO Constants should be in constants file
             return new File(fileOutputDir, gzipFile.getName().replaceAll("(.gz)$", ""));
         } catch (IOException e) {
             // TODO Exception Handling should be modified.
