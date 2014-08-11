@@ -28,6 +28,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.sanjay.common.constants.CommonConstants;
+import com.sanjay.common.enumeration.FileTransferProtocol;
 import com.sanjay.common.exception.ApplicationException;
 import com.sanjay.common.exception.ApplicationSeverity;
 
@@ -127,6 +128,40 @@ public final class FileUtil {
         }
     }
 
+    public boolean transferFile(final String username, final String password, final String host, final File file,
+                                final FileTransferProtocol transferProtocol) throws ApplicationException {
+        // TODO currently can deal with sftp only.
+        JSch jsch = new JSch();
+        try {
+            Session session = jsch.getSession(username, host);
+            logger.debug("Session Host: " + session.getHost());
+            session.setPassword(password);
+            Properties properties = new Properties();
+            properties.put("StrictHostKeyChecking", "no");
+            session.setConfig(properties);
+            logger.debug("Connecting to a session Host Server...");
+            session.connect();
+            logger.debug("session is established with host server.");
+            Channel channel = session.openChannel(transferProtocol.ftpStringRepresentation());
+            logger.debug("Connecting to a sftp Channel...");
+            channel.connect();
+            logger.debug("Connected with sftp Channel.");
+            ChannelSftp channelSftp = (ChannelSftp) channel;
+            channelSftp.put(new FileInputStream(file), file.getName());
+            logger.debug("File transfered successfully");
+            channelSftp.exit();
+            logger.debug("sftp channel disconnected.");
+            channel.disconnect();
+            logger.debug("channel disconnected.");
+            session.disconnect();
+            logger.debug("session disconnected.");
+            return true;
+        } catch (JSchException | FileNotFoundException | SftpException e) {
+            logger.error(e.getMessage(), e.getCause());
+            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
+        }
+    }
+
     /**
      * Transfer a file to remote destination via JSCH library using sFTP protocol
      * 
@@ -159,7 +194,7 @@ public final class FileUtil {
             channelSftp.put(new FileInputStream(file), file.getName());
             System.out.println("File Kept Successfully");
         } catch (FileNotFoundException | JSchException | SftpException e) {
-            throw new Exception();
+            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         } finally {
             if (channelSftp != null) {
                 channelSftp.exit();
