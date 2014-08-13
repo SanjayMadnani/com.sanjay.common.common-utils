@@ -17,6 +17,9 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.sanjay.common.exception.ApplicationException;
+import com.sanjay.common.exception.ApplicationSeverity;
+
 /**
  * Utility for getting i18n value from Properties file.
  * 
@@ -34,15 +37,15 @@ public final class BundleUtil {
      * Construct Object using the specified resourceBundleName.
      * 
      * @param resourceBundleName - the base name of the resource bundle.
-     * @exception NullPointerException - if resourceBundleName is null.
+     * @throws ApplicationException if resource bundle is null.
      */
-    public BundleUtil(final String resourceBundleName) {
-        logger.debug("Invoking 1 arg Constructor by bundle: " + resourceBundleName + "...");
+    public BundleUtil(final String resourceBundleName) throws ApplicationException {
+        logger.trace("Invoking 1 arg Constructor by bundle: " + resourceBundleName + "...");
         try {
             this.resourceBundle = ResourceBundle.getBundle(resourceBundleName);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            // TODO throw your custom exception
+            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }
 
@@ -51,16 +54,15 @@ public final class BundleUtil {
      * 
      * @param resourceBundleName - the base name of the resource bundle.
      * @param locale - the locale for which a resource bundle is desired.
-     * @exception NullPointerException - if resourceBundleName is null.
-     * @exception MissingResourceException - if no resource bundle for the specified base name can be found.
+     * @throws ApplicationException: MissingResourceException, NullPointerException
      */
-    public BundleUtil(final String resourceBundleName, final Locale locale) {
-        logger.debug("Invoking 2 args Constructor by bundle: " + resourceBundleName + "...");        
+    public BundleUtil(final String resourceBundleName, final Locale locale) throws ApplicationException {
+        logger.trace("Invoking 2 args Constructor by bundle: " + resourceBundleName + "...");
         try {
             this.resourceBundle = ResourceBundle.getBundle(resourceBundleName, locale);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            // TODO throw your custom exception
+            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }
 
@@ -72,15 +74,15 @@ public final class BundleUtil {
      * @exception MissingResourceException if no object for the given key can be found.
      * @exception ClassCastException if the object found for the given key is not a string.
      * @return the string for the given key.
+     * @throws ApplicationException: MissingResourceException, ClassCastException, NullPointerException
      */
-    public String getStringMessage(final String key) {
-        logger.debug("Invoking getStringMessage...");
+    public String getStringMessage(final String key) throws ApplicationException {
+        logger.trace("Invoking getStringMessage...");
         try {
             return this.resourceBundle.getString(key);
         } catch (NullPointerException | MissingResourceException | ClassCastException ex) {
             logger.error(ex.getMessage(), ex);
-            // TODO throw your custom exception rather than returning null.
-            return null;
+            throw new ApplicationException(ex.getMessage(), ApplicationSeverity.ERROR, ex.getCause(), ex);
         }
     }
 
@@ -95,15 +97,16 @@ public final class BundleUtil {
      * @exception IllegalArgumentException if the value of key is invalid, or if an argument in the arguments array is
      *                not of the type expected by the format element(s) that use it.
      * @return the formated string for the given key.
+     * @throws ApplicationException : NullPointerException, MissingResourceException, ClassCastException,
+     *             IllegalArgumentException
      */
-    public String getFormatedMessage(final String key, final Object... arguments) {
-        logger.debug("Invoking getFormatedMessage...");
+    public String getFormatedMessage(final String key, final Object... arguments) throws ApplicationException {
+        logger.trace("Invoking getFormatedMessage...");
         try {
             return MessageFormat.format(this.resourceBundle.getString(key), arguments);
         } catch (NullPointerException | MissingResourceException | ClassCastException | IllegalArgumentException ex) {
             logger.error(ex.getMessage(), ex);
-         // TODO throw your custom exception rather than returning null.
-            return null;
+            throw new ApplicationException(ex.getMessage(), ApplicationSeverity.ERROR, ex.getCause(), ex, arguments);
         }
     }
 }

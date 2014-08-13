@@ -128,6 +128,17 @@ public final class FileUtil {
         }
     }
 
+    /**
+     * Transfer a file to remote destination via JSCH library using sFTP protocol
+     * 
+     * @param username
+     * @param password
+     * @param host
+     * @param file
+     * @param transferProtocol
+     * @return
+     * @throws ApplicationException
+     */
     public boolean transferFile(final String username, final String password, final String host, final File file,
                                 final FileTransferProtocol transferProtocol) throws ApplicationException {
         // TODO currently can deal with sftp only.
@@ -161,51 +172,4 @@ public final class FileUtil {
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }
-
-    /**
-     * Transfer a file to remote destination via JSCH library using sFTP protocol
-     * 
-     * @param file
-     *            : file to transfer
-     * @throws IE2Exception
-     */
-    public void transferFile(File file) throws Exception {
-        Session session = null;
-        Channel channel = null;
-        ChannelSftp channelSftp = null;
-        final String USER = "sanjay";// TODO retrieve from properties : getProperty (FTP_USERNAME);
-        final String HOST = "10.14.76.187";// TODO retrieve from properties : getProperty (DESTINATION_HOST);
-        try {
-            JSch jsch = new JSch();
-            session = jsch.getSession(USER, HOST);
-            System.out.println("Session Host: " + session.getHost());
-            session.setPassword("sanjay");
-            Properties prop = new Properties();
-            prop.put("StrictHostKeyChecking", "no");
-            session.setConfig(prop);
-
-            System.out.println("Waiting for connecting a session Host Server");
-            session.connect();
-            System.out.println("Host server session established successfully.");
-            channel = session.openChannel("sftp");
-            channel.connect();
-            System.out.println("Connection established with sftp channel");
-            channelSftp = (ChannelSftp) channel;
-            channelSftp.put(new FileInputStream(file), file.getName());
-            System.out.println("File Kept Successfully");
-        } catch (FileNotFoundException | JSchException | SftpException e) {
-            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
-        } finally {
-            if (channelSftp != null) {
-                channelSftp.exit();
-            }
-            if (channel != null) {
-                channel.disconnect();
-            }
-            if (session != null) {
-                session.disconnect();
-            }
-        }
-    }
-
 }
