@@ -10,7 +10,6 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -20,7 +19,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sanjay.common.constants.CommonConstants;
 import com.sanjay.common.exception.ApplicationException;
 
 /**
@@ -31,23 +29,22 @@ public class FileUtilTest {
 
     private File inputFile;
     private File outputFile;
-
+    private File inputZipFile;
+    private File outputZipFile;
     private String inputFileDir;
-    private String inputFileName;
     private String outputFileDir;
-    private String outputFileName;
 
     /**
      * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
-        inputFileDir = "src/test/resources/FileOperation";
-        inputFileName = "licence.txt";
-        outputFileDir = "src/test/resources/FileOperation";
-        outputFileName = "Zlicence.txt.gz";
-        inputFile = new File(inputFileDir, inputFileName);
-        outputFile = new File(outputFileDir, outputFileName);
+        inputFileDir = "src/test/resources/FileOperation/InputFile";
+        outputFileDir = "src/test/resources/FileOperation/OutputFile";
+        inputFile = new File(inputFileDir, "licence.txt");
+        outputFile = new File(outputFileDir, "licence.txt.gz");
+        inputZipFile = new File(inputFileDir, "licence.txt.gz");
+        outputZipFile = new File(outputFileDir, "licence.txt.gz");
     }
 
     /**
@@ -57,6 +54,8 @@ public class FileUtilTest {
     public void tearDown() throws Exception {
         inputFile = null;
         outputFile = null;
+        inputZipFile = null;
+        outputZipFile = null;
     }
 
     /**
@@ -84,7 +83,8 @@ public class FileUtilTest {
     @Test
     public final void testCompressToGzipFormat() throws Exception {
         final File file = FileUtil.compressToGzipFormat(inputFile, outputFileDir);
-        assertEquals(inputFileName + ".gz", file.getName());
+        assertTrue(file.exists());
+        assertEquals(outputFile.getName(), file.getName());
         assertEquals(outputFile.getParent(), file.getParent());
     }
 
@@ -95,13 +95,10 @@ public class FileUtilTest {
      */
     @Test
     public final void testDecompressGzipFile() throws ApplicationException {
-        File gZipFile = new File(outputFileDir, inputFileName + CommonConstants.GZ);
-        if (gZipFile.exists()) {
-            File outputFile = FileUtil.decompressGzipFile(gZipFile, outputFileDir);
-            assertNotNull(outputFile);
-            assertTrue(outputFile.exists());
-            System.out.println("Decompressed successfully");
-        }
+        File file = FileUtil.decompressGzipFile(inputZipFile, outputFileDir);
+        assertTrue(file.exists());
+        assertEquals(inputFile.getName(), file.getName());
+        assertEquals(outputFile.getParent(), file.getParent());
     }
 
     /**
@@ -109,9 +106,7 @@ public class FileUtilTest {
      */
     @Test
     public final void testDeleteFile() {
-        File file = new File(outputFileDir, inputFileName + ".gz");
-        FileUtil.deleteFile(file);
-        System.out.println(file.getName() + " deleted successfully");
+        FileUtil.deleteFile(outputZipFile);
+        FileUtil.deleteFile(outputFile);
     }
-
 }

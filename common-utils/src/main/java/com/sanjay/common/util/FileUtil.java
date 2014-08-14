@@ -142,6 +142,7 @@ public final class FileUtil {
     public boolean transferFile(final String username, final String password, final String host, final File file,
                                 final FileTransferProtocol transferProtocol) throws ApplicationException {
         // TODO currently can deal with sftp only.
+        logger.trace("Invoking transferFile...");
         JSch jsch = new JSch();
         try {
             Session session = jsch.getSession(username, host);

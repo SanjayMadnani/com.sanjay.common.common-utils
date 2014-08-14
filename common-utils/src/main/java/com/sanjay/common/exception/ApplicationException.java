@@ -211,7 +211,6 @@ public class ApplicationException extends Exception {
      * @see java.lang.Object#toString() */
     @Override
     public String toString() {
-        logger.trace("Invoking Application toString...");
         StringBuffer buffer = new StringBuffer();
         buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER1);
         buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER2);
@@ -230,7 +229,7 @@ public class ApplicationException extends Exception {
         }
         if (this.objects != CommonConstants.NULL && this.objects.length > 0) {
             buffer.append(CommonConstants.EXCEPTION_STRING_APPENDER6);
-            buffer.append(this.objects);
+            buffer.append(Arrays.toString(this.objects));
         }
         return buffer.toString();
     }

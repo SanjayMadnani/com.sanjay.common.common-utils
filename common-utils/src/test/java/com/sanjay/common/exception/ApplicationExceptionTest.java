@@ -12,6 +12,8 @@ package com.sanjay.common.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 /**
@@ -19,6 +21,8 @@ import org.junit.Test;
  * 
  */
 public class ApplicationExceptionTest {
+
+    private static final Logger logger = LogManager.getLogger(ApplicationExceptionTest.class);
 
     /**
      * Test method for
@@ -35,6 +39,7 @@ public class ApplicationExceptionTest {
             assertEquals(ApplicationSeverity.ERROR, e.getSeverity());
             String[] param = e.getParams();
             assertEquals("test case1", param[0]);
+            logger.debug(e);
         }
     }
 
@@ -53,6 +58,7 @@ public class ApplicationExceptionTest {
             assertEquals(ApplicationSeverity.ERROR, e.getSeverity());
             Object[] param = e.getObjects();
             assertEquals(null, param[0]);
+            logger.debug(e);
         }
     }
 
@@ -69,6 +75,7 @@ public class ApplicationExceptionTest {
             assertEquals("INVALID_DATA3", e.getErrorKey());
             assertEquals(ApplicationSeverity.ERROR, e.getSeverity());
             assertEquals("java.lang.Throwable: Cause3", e.getMessage());
+            logger.debug(e);
         }
     }
 
@@ -87,6 +94,7 @@ public class ApplicationExceptionTest {
             assertEquals(ApplicationSeverity.ERROR, e.getSeverity());
             Object[] param = e.getObjects();
             assertEquals(null, param[0]);
+            logger.debug(e);
         }
     }
 
@@ -102,6 +110,7 @@ public class ApplicationExceptionTest {
         } catch (ApplicationException e) {
             assertEquals("INVALID_DATA5", e.getErrorKey());
             assertEquals(ApplicationSeverity.ERROR, e.getSeverity());
+            logger.debug(e);
         }
     }
 
@@ -117,6 +126,7 @@ public class ApplicationExceptionTest {
         } catch (ApplicationException e) {
             assertEquals(10, e.getErrorCode().intValue());
             assertEquals(ApplicationSeverity.ERROR, e.getSeverity());
+            logger.debug(e);
         }
     }
 
@@ -131,6 +141,7 @@ public class ApplicationExceptionTest {
         } catch (ApplicationException e) {
             assertEquals(10, e.getErrorCode().intValue());
             assertNotNull(e.getMessage());
+            logger.debug(e);
         }
     }
 
@@ -143,6 +154,7 @@ public class ApplicationExceptionTest {
             throw new ApplicationException("INVALID_DATA7");
         } catch (ApplicationException e) {
             assertEquals("INVALID_DATA7", e.getErrorKey());
+            logger.debug(e);
         }
     }
 
