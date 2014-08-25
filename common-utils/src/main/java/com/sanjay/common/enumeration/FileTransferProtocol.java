@@ -32,6 +32,6 @@ public enum FileTransferProtocol {
                 mapRepresentation.put(types.ftpStringRepresentation, types);
             }
         }
-        return (FileTransferProtocol) mapRepresentation.get(ftpStringRepresentation);
+        return mapRepresentation.get(ftpStringRepresentation);
     }
 }

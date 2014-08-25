@@ -5,7 +5,7 @@
 	<artifactId>common-utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>common-utils</name>
-	<description>Common utilities &amp; Exceptions required in projects.</description>
+	<description>Common utilities as general requirements of Java projects.</description>
 
 	<dependencies>
 		<dependency>
@@ -30,6 +30,12 @@
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
 			<version>0.1.50</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
 		</dependency>
 	</dependencies>
 
