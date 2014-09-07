@@ -12,7 +12,6 @@ package com.sanjay.common.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import static com.sanjay.common.util.RandomGeneratorUtil.CombinationOf.*;
 
 /**
  * @author SANJAY
@@ -33,7 +32,8 @@ public class RandomGeneratorUtil {
             // TODO write log and throw exception.
         }
         List<Integer> alphabetList = getAlphabetList();
-        List<Integer> numberList = getNumberList();
+        // TODO Delete below line if not required at all.
+        // List<Integer> numberList = getNumberList();
         List<Integer> specialCharacterList = getSpecialCharacterList();
         StringBuffer passwordBuffer = new StringBuffer();
         for (int i = 0; i < size; i++)
@@ -42,10 +42,12 @@ public class RandomGeneratorUtil {
                     int randomInt = randomIntValue(0, alphabetList.size());
                     char randomChar = (char) alphabetList.get(randomInt).intValue();
                     passwordBuffer.append(randomChar);
+                    break;
                 case NUMBER:
+                    passwordBuffer.append(random.nextInt(10));
                     break;
                 case ALPHABET_NUMBER:
-
+                    // TODO create a function which will give ALPHABET, Number & Special Char as per int value
                     break;
                 case ALPHABET_SPECIALCHARACTER:
 
@@ -66,13 +68,14 @@ public class RandomGeneratorUtil {
         return passwordBuffer.toString();
     }
 
-    private static List<Integer> getNumberList() {
-        List<Integer> numberList = new ArrayList<Integer>();
-        for (int i = 48; i <= 57; i++) {
-            numberList.add(i);
-        }
-        return numberList;
-    }
+    // TODO Delete below commented code if not required at all.
+    // private static List<Integer> getNumberList() {
+    // List<Integer> numberList = new ArrayList<Integer>();
+    // for (int i = 48; i <= 57; i++) {
+    // numberList.add(i);
+    // }
+    // return numberList;
+    // }
 
     private static List<Integer> getSpecialCharacterList() {
         List<Integer> specialCharacterList = new ArrayList<Integer>();
@@ -99,19 +102,14 @@ public class RandomGeneratorUtil {
     public static String generatePin(int size) {
         StringBuffer randomPin = new StringBuffer();
         for (int i = 0; i < size; i++) {
-            randomPin.append(random.nextInt(9));
+            randomPin.append(random.nextInt(10));
         }
         return randomPin.toString();
     }
 
-    public static int generatePin(int minimumSize, int maximumSize) {
-        int size = randomIntValue(minimumSize, maximumSize);
-        int number = randomIntValue(1, 9) + 1;
-        for (int j = 10, i = 0; i < size; i++) {
-            number += (randomIntValue(0, 9) + 1) * j;
-            j = j * 10;
-        }
-        return number;
+    public static String generatePin(int minimumSize, int maximumSize) {
+        int size = randomIntValue(minimumSize, maximumSize) + 1;
+        return generatePin(size);
     }
 
     public static int randomIntValue(int minimumValue, int maximumValue) {
