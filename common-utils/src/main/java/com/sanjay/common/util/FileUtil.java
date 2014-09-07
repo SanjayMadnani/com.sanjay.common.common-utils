@@ -79,8 +79,7 @@ public final class FileUtil {
         logger.trace("Invoking compressToGzipFormat...");
         try (final FileInputStream fis = new FileInputStream(inputFile);
                 final FileOutputStream fos =
-                        new FileOutputStream(gzipOutputDir + CommonConstants.FORWARD_SLASH + inputFile.getName() +
-                                CommonConstants.GZ);
+                        new FileOutputStream(new File(gzipOutputDir, inputFile.getName() + CommonConstants.GZ));
                 final GZIPOutputStream gzipOS = new GZIPOutputStream(fos);) {
             final byte[] buffer = new byte[CommonConstants.ONE_KB];
             int length;
@@ -90,9 +89,8 @@ public final class FileUtil {
             logger.debug(inputFile.getName() + ".gz is created in Dir: " + gzipOutputDir);
             return new File(gzipOutputDir, inputFile.getName() + CommonConstants.GZ);
         } catch (IOException e) {
-            // TODO Exception Handling should be modified.
             logger.error(e.getMessage(), e);
-            throw new ApplicationException("", ApplicationSeverity.ERROR, e, inputFile, gzipOutputDir);
+            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e, inputFile, gzipOutputDir);
         }
     }
 
@@ -110,9 +108,8 @@ public final class FileUtil {
             logger.debug(gzipFile.getName() + " File decompressed to dir: " + fileOutputDir);
             return new File(fileOutputDir, gzipFile.getName().replaceAll("(.gz)$", ""));
         } catch (IOException e) {
-            // TODO Exception Handling should be modified.
             logger.error(e.getMessage(), e);
-            throw new ApplicationException("", ApplicationSeverity.ERROR, e, gzipFile, fileOutputDir);
+            throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e, gzipFile, fileOutputDir);
         }
     }
 
@@ -173,4 +170,15 @@ public final class FileUtil {
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }
+
+    // TODO Implementation Pending.
+    public boolean copyFile(File srcFile, File destLocation) {
+        return false;
+    }
+
+    // TODO Implementation Pending.
+    public void copyFiles(File srcFolder, File destFolder) {
+
+    }
+
 }
