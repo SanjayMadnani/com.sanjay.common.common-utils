@@ -9,18 +9,91 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import static com.sanjay.common.util.RandomGeneratorUtil.CombinationOf.*;
 
 /**
  * @author SANJAY
  * 
  */
+// TODO Logger & Exception implementation pending.
 public class RandomGeneratorUtil {
+    public static enum CombinationOf {
+        ALPHABET, NUMBER, ALPHABET_NUMBER, ALPHABET_SPECIALCHARACTER, NUMBER_SPECIALCHARACTER,
+        ALPHABET_NUMBER_SPECIALCHARACTER;
+    }
+
     private static Random random = new Random();
 
     // TODO Implementation Pending.
-    public static String generatePassword(int size) {
-        return null;
+    public static String generatePassword(int size, CombinationOf passwordCombination) {
+        if (size < 3) {
+            // TODO write log and throw exception.
+        }
+        List<Integer> alphabetList = getAlphabetList();
+        List<Integer> numberList = getNumberList();
+        List<Integer> specialCharacterList = getSpecialCharacterList();
+        StringBuffer passwordBuffer = new StringBuffer();
+        for (int i = 0; i < size; i++)
+            switch (passwordCombination) {
+                case ALPHABET:
+                    int randomInt = randomIntValue(0, alphabetList.size());
+                    char randomChar = (char) alphabetList.get(randomInt).intValue();
+                    passwordBuffer.append(randomChar);
+                case NUMBER:
+                    break;
+                case ALPHABET_NUMBER:
+
+                    break;
+                case ALPHABET_SPECIALCHARACTER:
+
+                    break;
+                case NUMBER_SPECIALCHARACTER:
+
+                    break;
+                case ALPHABET_NUMBER_SPECIALCHARACTER:
+
+                    break;
+                default:
+                    // throw Exception
+                    break;
+            }
+        // TODO check password combination
+        // if all then random number from 1 to 3, where 1 is alphabet, 2 is number and 3 is specialchar
+        // in last if combination is not appropriate then replace any random word to construct proper combination.
+        return passwordBuffer.toString();
+    }
+
+    private static List<Integer> getNumberList() {
+        List<Integer> numberList = new ArrayList<Integer>();
+        for (int i = 48; i <= 57; i++) {
+            numberList.add(i);
+        }
+        return numberList;
+    }
+
+    private static List<Integer> getSpecialCharacterList() {
+        List<Integer> specialCharacterList = new ArrayList<Integer>();
+        for (int i = 33; i <= 64; i++) {
+            if ((i > 33 && i < 42) || (i > 43 && i < 58)) {
+                continue;
+            }
+            specialCharacterList.add(i);
+        }
+        return specialCharacterList;
+    }
+
+    private static List<Integer> getAlphabetList() {
+        List<Integer> alphabetList = new ArrayList<Integer>();
+        for (int i = 65; i <= 90; i++) {
+            alphabetList.add(i);
+        }
+        for (int i = 97; i <= 122; i++) {
+            alphabetList.add(i);
+        }
+        return alphabetList;
     }
 
     public static String generatePin(int size) {
@@ -33,9 +106,9 @@ public class RandomGeneratorUtil {
 
     public static int generatePin(int minimumSize, int maximumSize) {
         int size = randomIntValue(minimumSize, maximumSize);
-        int number = 0;
-        for (int j = 1, i = 0; i < size; i++) {
-            number += randomIntValue(0, 9) * j;
+        int number = randomIntValue(1, 9) + 1;
+        for (int j = 10, i = 0; i < size; i++) {
+            number += (randomIntValue(0, 9) + 1) * j;
             j = j * 10;
         }
         return number;
