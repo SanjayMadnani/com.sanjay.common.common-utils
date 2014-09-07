@@ -12,7 +12,7 @@ package com.sanjay.common.enumeration;
 import java.util.HashMap;
 
 public enum FileTransferProtocol {
-    SFTP ("sftp"), FTP ("ftp");
+    SFTP ("sftp");
 
     private static HashMap<String, FileTransferProtocol> mapRepresentation;
     private String ftpStringRepresentation;

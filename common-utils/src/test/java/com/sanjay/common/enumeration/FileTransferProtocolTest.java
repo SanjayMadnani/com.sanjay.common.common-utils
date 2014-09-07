@@ -23,7 +23,6 @@ public class FileTransferProtocolTest {
      */
     @Test
     public final void testFtpStringRepresentation() {
-        assertEquals("ftp", FileTransferProtocol.FTP.ftpStringRepresentation());
         assertEquals("sftp", FileTransferProtocol.SFTP.ftpStringRepresentation());
     }
 
@@ -33,7 +32,6 @@ public class FileTransferProtocolTest {
      */
     @Test
     public final void testValueOfFtpStringRepresentation() {
-        assertEquals(FileTransferProtocol.FTP, FileTransferProtocol.valueOfFtpStringRepresentation("ftp"));
         assertEquals(FileTransferProtocol.SFTP, FileTransferProtocol.valueOfFtpStringRepresentation("sftp"));
     }
 
