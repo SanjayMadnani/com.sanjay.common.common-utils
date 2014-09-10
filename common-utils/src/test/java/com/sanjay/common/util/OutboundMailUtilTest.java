@@ -56,8 +56,8 @@ public class OutboundMailUtilTest {
     public final void testGetSmtpSession() {
         session =
                 mailUtil.getSmtpSession("username@gmail.com", "password", "smtp.gmail.com", "587",
-                        MailTransferProperties.True, MailTransferProperties.False, MailTransferProperties.True,
-                        MailTransferProperties.True);
+                        MailTransferProperties.TRUE, MailTransferProperties.FALSE, MailTransferProperties.TRUE,
+                        MailTransferProperties.TRUE);
         assertTrue(session.getDebug());
         assertEquals("smtp.gmail.com", session.getProperty("mail.smtp.host"));
         assertEquals("mail.smtp.port", session.getProperty("587"));

@@ -35,4 +35,7 @@ public final class CommonConstants {
     public static final String EXCEPTION_STRING_APPENDER5 = "null";
     public static final String EXCEPTION_STRING_APPENDER6 = " Additional information associated to exception: ";
 
+    private CommonConstants() {
+
+    }
 }

@@ -37,15 +37,15 @@ import com.sanjay.common.exception.ApplicationSeverity;
  * 
  */
 public final class FileUtil {
-    private static final Logger logger = LogManager.getLogger(FileUtil.class);
+    private static final Logger LOGGER = LogManager.getLogger(FileUtil.class);
 
     private static boolean isValidOperation(File file) {
-        logger.trace("Invoking isValidOperation...");
+        LOGGER.trace("Invoking isValidOperation...");
         if (file != null && file.exists() && file.isFile()) {
-            logger.trace("File " + file.getName() + " is Valid to perform Operation.");
+            LOGGER.trace("File " + file.getName() + " is Valid to perform Operation.");
             return true;
         } else {
-            logger.error("File is invalid to perform operation.");
+            LOGGER.error("File is invalid to perform operation.");
             return false;
         }
     }
@@ -56,7 +56,7 @@ public final class FileUtil {
      * @return
      */
     public static String getFileSize(File file) {
-        logger.trace("Invoking getFileSize...");
+        LOGGER.trace("Invoking getFileSize...");
         if (isValidOperation(file)) {
             long fileSize = file.length();
             if (fileSize / CommonConstants.ONE_GB > 0) {
@@ -76,7 +76,7 @@ public final class FileUtil {
 
     public static File compressToGzipFormat(final File inputFile, final String gzipOutputDir)
         throws ApplicationException {
-        logger.trace("Invoking compressToGzipFormat...");
+        LOGGER.trace("Invoking compressToGzipFormat...");
         try (final FileInputStream fis = new FileInputStream(inputFile);
                 final FileOutputStream fos =
                         new FileOutputStream(new File(gzipOutputDir, inputFile.getName() + CommonConstants.GZ));
@@ -86,16 +86,16 @@ public final class FileUtil {
             while ((length = fis.read(buffer)) != -1) {
                 gzipOS.write(buffer, 0, length);
             }
-            logger.debug(inputFile.getName() + ".gz is created in Dir: " + gzipOutputDir);
+            LOGGER.debug(inputFile.getName() + ".gz is created in Dir: " + gzipOutputDir);
             return new File(gzipOutputDir, inputFile.getName() + CommonConstants.GZ);
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e, inputFile, gzipOutputDir);
         }
     }
 
     public static File decompressGzipFile(final File gzipFile, final String fileOutputDir) throws ApplicationException {
-        logger.trace("Invoking decompressGzipFile...");
+        LOGGER.trace("Invoking decompressGzipFile...");
         try (final FileInputStream fis = new FileInputStream(gzipFile);
                 final GZIPInputStream gis = new GZIPInputStream(fis);
                 final FileOutputStream fos =
@@ -105,22 +105,22 @@ public final class FileUtil {
             while ((length = gis.read(buffer)) != -1) {
                 fos.write(buffer, 0, length);
             }
-            logger.debug(gzipFile.getName() + " File decompressed to dir: " + fileOutputDir);
+            LOGGER.debug(gzipFile.getName() + " File decompressed to dir: " + fileOutputDir);
             return new File(fileOutputDir, gzipFile.getName().replaceAll("(.gz)$", ""));
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e, gzipFile, fileOutputDir);
         }
     }
 
     public static void deleteFile(File file) {
-        logger.trace("Invoking deleteFile...");
+        LOGGER.trace("Invoking deleteFile...");
         if (isValidOperation(file)) {
             if ( !file.delete()) {
-                logger.debug(file.getName() + " File will delete on exit");
+                LOGGER.debug(file.getName() + " File will delete on exit");
                 file.deleteOnExit();
             } else {
-                logger.debug(file.getName() + " File is deleted successfully");
+                LOGGER.debug(file.getName() + " File is deleted successfully");
             }
         }
     }
@@ -139,34 +139,34 @@ public final class FileUtil {
     public boolean transferFile(final String username, final String password, final String host, final File file,
                                 final FileTransferProtocol transferProtocol) throws ApplicationException {
         // TODO currently can deal with sftp only.
-        logger.trace("Invoking transferFile...");
+        LOGGER.trace("Invoking transferFile...");
         JSch jsch = new JSch();
         try {
             Session session = jsch.getSession(username, host);
-            logger.debug("Session Host: " + session.getHost());
+            LOGGER.debug("Session Host: " + session.getHost());
             session.setPassword(password);
             Properties properties = new Properties();
             properties.put("StrictHostKeyChecking", "no");
             session.setConfig(properties);
-            logger.debug("Connecting to a session Host Server...");
+            LOGGER.debug("Connecting to a session Host Server...");
             session.connect();
-            logger.debug("session is established with host server.");
+            LOGGER.debug("session is established with host server.");
             Channel channel = session.openChannel(transferProtocol.ftpStringRepresentation());
-            logger.debug("Connecting to a sftp Channel...");
+            LOGGER.debug("Connecting to a sftp Channel...");
             channel.connect();
-            logger.debug("Connected with sftp Channel.");
+            LOGGER.debug("Connected with sftp Channel.");
             ChannelSftp channelSftp = (ChannelSftp) channel;
             channelSftp.put(new FileInputStream(file), file.getName());
-            logger.debug("File transfered successfully");
+            LOGGER.debug("File transfered successfully");
             channelSftp.exit();
-            logger.debug("sftp channel disconnected.");
+            LOGGER.debug("sftp channel disconnected.");
             channel.disconnect();
-            logger.debug("channel disconnected.");
+            LOGGER.debug("channel disconnected.");
             session.disconnect();
-            logger.debug("session disconnected.");
+            LOGGER.debug("session disconnected.");
             return true;
         } catch (JSchException | FileNotFoundException | SftpException e) {
-            logger.error(e.getMessage(), e.getCause());
+            LOGGER.error(e.getMessage(), e.getCause());
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }

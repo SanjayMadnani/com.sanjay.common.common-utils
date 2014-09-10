@@ -16,6 +16,10 @@ package com.sanjay.common.util;
 // TODO Logger & Exception implementation pending.
 public class ValidationUtil {
 
+    private ValidationUtil() {
+
+    }
+
     // TODO Pending.
     public static boolean isValidEmailID(String emailID) {
         return false;

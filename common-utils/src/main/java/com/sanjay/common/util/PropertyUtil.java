@@ -32,7 +32,7 @@ import com.sanjay.common.exception.ApplicationSeverity;
  */
 public final class PropertyUtil {
 
-    private static final Logger logger = LogManager.getLogger(PropertyUtil.class);
+    private static final Logger LOGGER = LogManager.getLogger(PropertyUtil.class);
     private transient Properties properties;
 
     /**
@@ -43,13 +43,13 @@ public final class PropertyUtil {
      * @exception NullPointerException - if resourceBundleName is null.
      */
     public PropertyUtil(final String baseName) throws ApplicationException {
-        logger.trace("Invoking Constructor with baseName: " + baseName + "...");
+        LOGGER.trace("Invoking Constructor with baseName: " + baseName + "...");
         try {
             properties = new Properties();
             InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(baseName);
             properties.load(inputStream);
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e, baseName);
         }
     }
@@ -63,13 +63,13 @@ public final class PropertyUtil {
      * @exception NullPointerException - if resourceBundleName is null.
      */
     public PropertyUtil(final String pathDirectory, final String baseName) throws ApplicationException {
-        logger.trace("Invoking Constructor with path: " + pathDirectory + ", baseName: " + baseName + "...");
+        LOGGER.trace("Invoking Constructor with path: " + pathDirectory + ", baseName: " + baseName + "...");
         try {
             properties = new Properties();
             Reader reader = new FileReader(new File(pathDirectory, baseName));
             properties.load(reader);
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e, pathDirectory,
                     baseName);
         }
@@ -82,7 +82,7 @@ public final class PropertyUtil {
      * @return value corresponding to key.
      */
     public Object getValue(String key) {
-        logger.trace("Invoking getValue by passing key: " + key + "...");
+        LOGGER.trace("Invoking getValue by passing key: " + key + "...");
         return properties.get(key);
     }
 }

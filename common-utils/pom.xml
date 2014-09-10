@@ -7,11 +7,19 @@
 	<name>common-utils</name>
 	<description>Common utilities as general requirements of Java projects.</description>
 
+	<properties>
+		<sonar.host.url>http://localhost:9000/</sonar.host.url>
+		<sonar.jacoco.reportMissing.force.zero>true</sonar.jacoco.reportMissing.force.zero>
+		<sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+		<sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -31,7 +39,7 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.50</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -48,6 +56,7 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+					<runOrder>random</runOrder>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -63,6 +72,71 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.1.201405082137</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<!-- calculate coverage metrics per test with SonarQube and JaCoCo -->
+			<id>coverage-per-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.13</version>
+						<configuration>
+							<!-- same configuration as in the regular test execution goal -->
+							<argLine>-XX:-UseSplitVerifier</argLine>
+							<includes>
+								<include>**/*Test.java</include>
+								<include>**/*Tests.java</include>
+							</includes>
+							<excludes>
+								<exclude>**/it/*IT.java</exclude>
+							</excludes>
+							<!-- new configuration needed for coverage per test -->
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>org.sonar.java.jacoco.JUnitListener</value>
+								</property>
+							</properties>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.7.1.201405082137</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.codehaus.sonar-plugins.java</groupId>
+					<artifactId>sonar-jacoco-listeners</artifactId>
+					<version>2.3</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>

@@ -29,7 +29,7 @@ import com.sanjay.common.exception.ApplicationSeverity;
  * @see MessageFormat
  */
 public final class BundleUtil {
-    private static final Logger logger = LogManager.getLogger(BundleUtil.class);
+    private static final Logger LOG = LogManager.getLogger(BundleUtil.class);
 
     private transient ResourceBundle resourceBundle;
 
@@ -40,11 +40,11 @@ public final class BundleUtil {
      * @throws ApplicationException if resource bundle is null.
      */
     public BundleUtil(final String resourceBundleName) throws ApplicationException {
-        logger.trace("Invoking 1 arg Constructor by bundle: " + resourceBundleName + "...");
+        LOG.trace("Invoking 1 arg Constructor by bundle: " + resourceBundleName + "...");
         try {
             this.resourceBundle = ResourceBundle.getBundle(resourceBundleName);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }
@@ -57,11 +57,11 @@ public final class BundleUtil {
      * @throws ApplicationException: MissingResourceException, NullPointerException
      */
     public BundleUtil(final String resourceBundleName, final Locale locale) throws ApplicationException {
-        logger.trace("Invoking 2 args Constructor by bundle: " + resourceBundleName + "...");
+        LOG.trace("Invoking 2 args Constructor by bundle: " + resourceBundleName + "...");
         try {
             this.resourceBundle = ResourceBundle.getBundle(resourceBundleName, locale);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             throw new ApplicationException(e.getMessage(), ApplicationSeverity.ERROR, e.getCause(), e);
         }
     }
@@ -77,11 +77,11 @@ public final class BundleUtil {
      * @throws ApplicationException: MissingResourceException, ClassCastException, NullPointerException
      */
     public String getStringMessage(final String key) throws ApplicationException {
-        logger.trace("Invoking getStringMessage...");
+        LOG.trace("Invoking getStringMessage...");
         try {
             return this.resourceBundle.getString(key);
         } catch (NullPointerException | MissingResourceException | ClassCastException ex) {
-            logger.error(ex.getMessage(), ex);
+            LOG.error(ex.getMessage(), ex);
             throw new ApplicationException(ex.getMessage(), ApplicationSeverity.ERROR, ex.getCause(), ex);
         }
     }
@@ -101,11 +101,11 @@ public final class BundleUtil {
      *             IllegalArgumentException
      */
     public String getFormatedMessage(final String key, final Object... arguments) throws ApplicationException {
-        logger.trace("Invoking getFormatedMessage...");
+        LOG.trace("Invoking getFormatedMessage...");
         try {
             return MessageFormat.format(this.resourceBundle.getString(key), arguments);
         } catch (NullPointerException | MissingResourceException | ClassCastException | IllegalArgumentException ex) {
-            logger.error(ex.getMessage(), ex);
+            LOG.error(ex.getMessage(), ex);
             throw new ApplicationException(ex.getMessage(), ApplicationSeverity.ERROR, ex.getCause(), ex, arguments);
         }
     }

@@ -10,11 +10,12 @@
 package com.sanjay.common.enumeration;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public enum FileTransferProtocol {
     SFTP ("sftp");
 
-    private static HashMap<String, FileTransferProtocol> mapRepresentation;
+    private static Map<String, FileTransferProtocol> mapRepresentation;
     private String ftpStringRepresentation;
 
     private FileTransferProtocol(String ftpStringRepresentation) {

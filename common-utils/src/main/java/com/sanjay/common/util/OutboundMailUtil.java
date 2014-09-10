@@ -40,8 +40,9 @@ public class OutboundMailUtil {
     private String smtpUserId = null;
 
     private <T> boolean isNull(List<T> list) {
-        if (list != null && list.size() > 0)
+        if ((list != null) && ( !list.isEmpty())) {
             return false;
+        }
         return true;
     }
 
@@ -71,15 +72,14 @@ public class OutboundMailUtil {
         props.put("mail.smtp.ssl.enable", smtpSslEnable.strMailTransferProperty());
         props.put("mail.smtp.starttls.enable", smtpStarttlsEnable.strMailTransferProperty());
         props.put("mail.smtp.port", smtpPort);
-        if (smtpStarttlsEnable == MailTransferProperties.False && smtpSslEnable == MailTransferProperties.True) {
+        if (smtpStarttlsEnable == MailTransferProperties.FALSE && smtpSslEnable == MailTransferProperties.TRUE) {
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         }
-        Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+        return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(smtpUserId, smtpUserPassword);
             }
         });
-        return session;
     }
 
     /**
