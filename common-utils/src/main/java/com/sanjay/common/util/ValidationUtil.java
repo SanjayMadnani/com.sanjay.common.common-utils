@@ -9,6 +9,8 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.util;
 
+import com.sanjay.common.constants.CommonConstants;
+
 /**
  * @author SANJAY
  * 
@@ -20,8 +22,10 @@ public class ValidationUtil {
 
     }
 
-    // TODO Pending.
     public static boolean isValidEmailID(String emailID) {
+        if (emailID.matches(CommonConstants.EMAIL_ID_REGEX)) {
+            return true;
+        }
         return false;
     }
 

@@ -66,16 +66,21 @@ public class RandomGeneratorUtil {
                     passwordBuffer.append(getPasswordCharacter(1));
                     break;
                 case ALPHABET_NUMBER:
-                    // TODO create a function which will give ALPHABET, Number & Special Char as per int value
+                    passwordBuffer.append(getPasswordCharacter(randomIntValue(0, 2)));
                     break;
                 case ALPHABET_SPECIALCHARACTER:
-
+                    int randomNo = randomIntValue(0, 2);
+                    if (randomNo == 0) {
+                        passwordBuffer.append(getPasswordCharacter(0));
+                    } else {
+                        passwordBuffer.append(getPasswordCharacter(2));
+                    }
                     break;
                 case NUMBER_SPECIALCHARACTER:
-
+                    passwordBuffer.append(getPasswordCharacter(randomIntValue(1, 3)));
                     break;
                 case ALPHABET_NUMBER_SPECIALCHARACTER:
-
+                    passwordBuffer.append(getPasswordCharacter(randomIntValue(0, 3)));
                     break;
                 default:
                     // throw Exception
