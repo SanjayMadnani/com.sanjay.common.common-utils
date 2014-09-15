@@ -14,12 +14,16 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.sanjay.common.exception.ApplicationException;
+import com.sanjay.common.exception.ApplicationExceptionTest;
 
 /**
  * @author sanjay.madnani
@@ -108,5 +112,16 @@ public class FileUtilTest {
     public final void testDeleteFile() {
         FileUtil.deleteFile(outputFile);
         FileUtil.deleteFile(outputZipFile);
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#copyFile(java.io.File, java.io.File)}.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public final void testCopyFile() throws Exception {
+        assertTrue(FileUtil.copyFile(inputFile, outputFile.getParentFile()));
+        assertTrue(FileUtil.copyFile(inputZipFile, outputZipFile.getParentFile()));
     }
 }

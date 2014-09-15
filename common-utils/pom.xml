@@ -95,18 +95,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
-						<!-- <version>2.13</version> -->
+						<version>2.17</version>
 						<configuration>
-							<!-- same configuration as in the regular test execution goal -->
+							<skipTests>false</skipTests>
 							<argLine>-XX:-UseSplitVerifier</argLine>
-							<includes>
-								<include>**/*Test.java</include>
-								<include>**/*Tests.java</include>
-							</includes>
-							<excludes>
-								<exclude>**/it/*IT.java</exclude>
-							</excludes>
-							<!-- new configuration needed for coverage per test -->
 							<properties>
 								<property>
 									<name>listener</name>
@@ -114,18 +106,6 @@
 								</property>
 							</properties>
 						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.7.1.201405082137</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>

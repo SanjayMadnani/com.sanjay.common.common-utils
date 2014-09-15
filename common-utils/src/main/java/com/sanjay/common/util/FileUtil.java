@@ -14,6 +14,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -138,7 +141,7 @@ public final class FileUtil {
      */
     public boolean transferFile(final String username, final String password, final String host, final File file,
                                 final FileTransferProtocol transferProtocol) throws ApplicationException {
-        // TODO currently can deal with sftp only.
+        // currently can deal with sftp only.
         LOGGER.trace("Invoking transferFile...");
         JSch jsch = new JSch();
         try {
@@ -171,8 +174,20 @@ public final class FileUtil {
         }
     }
 
-    // TODO Implementation Pending.
-    public boolean copyFile(File srcFile, File destLocation) {
+    public static boolean copyFile(File srcFile, File destLocation) throws IOException {
+        LOGGER.trace("Invoking copyFile...");
+        if (isValidOperation(srcFile)) {
+            if ( !destLocation.exists()) {
+                destLocation.mkdirs();
+                LOGGER.debug(destLocation.getPath() + " Directory created.");
+            }
+            Path path =
+                    Files.copy(srcFile.toPath(), destLocation.toPath().resolve(srcFile.getName()),
+                            StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.debug(path.toString() + " copied.");
+            return true;
+        }
+        LOGGER.error("file is not copied.");
         return false;
     }
 
