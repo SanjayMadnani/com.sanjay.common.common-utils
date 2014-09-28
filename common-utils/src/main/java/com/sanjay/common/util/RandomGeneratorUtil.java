@@ -83,7 +83,7 @@ public class RandomGeneratorUtil {
                     passwordBuffer.append(getPasswordCharacter(randomIntValue(0, 3)));
                     break;
                 default:
-                    // throw Exception
+                    // TODO throw Exception
                     break;
             }
         }
@@ -110,7 +110,7 @@ public class RandomGeneratorUtil {
                 return specialCharacterList.get(randomInt).toString();
 
             default:
-                // throw error and error log as well.
+                // TODO throw illegal argument exception and error log as well.
                 return null;
         }
     }
