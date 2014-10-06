@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.sanjay.common.constants.CommonConstants;
+
 /**
  * @author SANJAY
  * 
@@ -70,11 +72,8 @@ public class RandomGeneratorUtil {
                     break;
                 case ALPHABET_SPECIALCHARACTER:
                     int randomNo = randomIntValue(0, 2);
-                    if (randomNo == 0) {
-                        passwordBuffer.append(getPasswordCharacter(0));
-                    } else {
-                        passwordBuffer.append(getPasswordCharacter(2));
-                    }
+                    String randomValue = (randomNo == 0) ? getPasswordCharacter(0) : getPasswordCharacter(2);
+                    passwordBuffer.append(randomValue);
                     break;
                 case NUMBER_SPECIALCHARACTER:
                     passwordBuffer.append(getPasswordCharacter(randomIntValue(1, 3)));
@@ -87,10 +86,56 @@ public class RandomGeneratorUtil {
                     break;
             }
         }
-        // TODO check password combination
-        // if all then random number from 1 to 3, where 1 is alphabet, 2 is number and 3 is specialchar
-        // in last if combination is not appropriate then replace any random word to construct proper combination.
-        return passwordBuffer.toString();
+        return correctInvalidPassword(passwordBuffer, passwordCombination);
+    }
+
+    private static String correctInvalidPassword(final StringBuilder passwordBuffer,
+                                                 final CombinationOf passwordCombination) {
+        String strPassword = passwordBuffer.toString();
+
+        switch (passwordCombination) {
+            case ALPHABET_NUMBER:
+                if ( !strPassword.matches(CommonConstants.CONTAINS_ALPHABATE)) {
+                    strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
+                            getPasswordCharacter(0).charAt(0));
+                } else if ( !strPassword.matches(CommonConstants.CONTAINS_NUMBER)) {
+                    strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
+                            getPasswordCharacter(1).charAt(1));
+                }
+                break;
+            case ALPHABET_SPECIALCHARACTER:
+                if ( !strPassword.matches(CommonConstants.CONTAINS_ALPHABATE)) {
+                    strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
+                            getPasswordCharacter(0).charAt(0));
+                } else if ( !strPassword.matches(CommonConstants.CONTAINS_SPECIAL_CHAR)) {
+                    strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
+                            getPasswordCharacter(1).charAt(2));
+                }
+                break;
+            case NUMBER_SPECIALCHARACTER:
+                if ( !strPassword.matches(CommonConstants.CONTAINS_NUMBER)) {
+                    strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
+                            getPasswordCharacter(1).charAt(1));
+                } else if ( !strPassword.matches(CommonConstants.CONTAINS_SPECIAL_CHAR)) {
+                    strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
+                            getPasswordCharacter(1).charAt(2));
+                }
+                break;
+            case ALPHABET_NUMBER_SPECIALCHARACTER:
+                if ( !strPassword.matches(CommonConstants.CONTAINS_ALPHABATE)) {
+                    strPassword.replace(strPassword.charAt(0), getPasswordCharacter(0).charAt(0));
+                }
+                if ( !strPassword.matches(CommonConstants.CONTAINS_NUMBER)) {
+                    strPassword.replace(strPassword.charAt(1), getPasswordCharacter(1).charAt(1));
+                }
+                if ( !strPassword.matches(CommonConstants.CONTAINS_SPECIAL_CHAR)) {
+                    strPassword.replace(strPassword.charAt(2), getPasswordCharacter(1).charAt(2));
+                }
+                break;
+            default:
+                break;
+        }
+        return strPassword;
     }
 
     // TODO correct the functionality.
@@ -108,7 +153,6 @@ public class RandomGeneratorUtil {
             case 2:
                 randomInt = randomIntValue(0, specialCharacterList.size());
                 return specialCharacterList.get(randomInt).toString();
-
             default:
                 // TODO throw illegal argument exception and error log as well.
                 return null;

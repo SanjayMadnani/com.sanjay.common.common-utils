@@ -35,6 +35,11 @@ public final class CommonConstants {
     public static final String EXCEPTION_STRING_APPENDER5 = "null";
     public static final String EXCEPTION_STRING_APPENDER6 = " Additional information associated to exception: ";
 
+    // Regular Expression
+    public static final String CONTAINS_ALPHABATE = "(.*?)[a-zA-Z]+(.*?)";
+    public static final String CONTAINS_NUMBER = "(.*?)(\\d)+(.*?)";
+    public static final String CONTAINS_SPECIAL_CHAR = "(.*?)[^a-zA-Z\\d]+(.*?)";
+
     private CommonConstants() {
 
     }
