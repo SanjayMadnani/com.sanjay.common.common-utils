@@ -191,9 +191,4 @@ public final class FileUtil {
         return false;
     }
 
-    // TODO Implementation Pending.
-    public void copyFiles(File srcFolder, File destFolder) {
-
-    }
-
 }

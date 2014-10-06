@@ -29,6 +29,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.sanjay.common.dto.OutboundDTO;
 import com.sanjay.common.enumeration.MailTransferProperties;
 
 /**
@@ -59,25 +60,22 @@ public class OutboundMailUtil {
      * @param debugMode MailTransferProperties true or false.
      * @return smtpSession javax.mail.Session
      */
-    public Session getSmtpSession(final String smtpUserId, final String smtpUserPassword, final String smtpHost,
-                                  final String smtpPort, final MailTransferProperties smtpAuth,
-                                  final MailTransferProperties smtpSslEnable,
-                                  final MailTransferProperties smtpStarttlsEnable,
-                                  final MailTransferProperties debugMode) {
-        this.smtpUserId = smtpUserId;
+    public Session getSmtpSession(final OutboundDTO outboundDTO) {
+        this.smtpUserId = outboundDTO.getSmtpUserId();
         Properties props = new Properties();
-        props.put("mail.smtp.host", smtpHost);
-        props.put("mail.smtp.auth", smtpAuth.strMailTransferProperty());
-        props.put("mail.debug", debugMode.strMailTransferProperty());
-        props.put("mail.smtp.ssl.enable", smtpSslEnable.strMailTransferProperty());
-        props.put("mail.smtp.starttls.enable", smtpStarttlsEnable.strMailTransferProperty());
-        props.put("mail.smtp.port", smtpPort);
-        if (smtpStarttlsEnable == MailTransferProperties.FALSE && smtpSslEnable == MailTransferProperties.TRUE) {
+        props.put("mail.smtp.host", outboundDTO.getSmtpHost());
+        props.put("mail.smtp.auth", outboundDTO.getSmtpAuth().strMailTransferProperty());
+        props.put("mail.debug", outboundDTO.getDebugMode().strMailTransferProperty());
+        props.put("mail.smtp.ssl.enable", outboundDTO.getSmtpSslEnable().strMailTransferProperty());
+        props.put("mail.smtp.starttls.enable", outboundDTO.getSmtpStarttlsEnable().strMailTransferProperty());
+        props.put("mail.smtp.port", outboundDTO.getSmtpPort());
+        if (outboundDTO.getSmtpStarttlsEnable() == MailTransferProperties.FALSE &&
+                outboundDTO.getSmtpSslEnable() == MailTransferProperties.TRUE) {
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         }
         return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(smtpUserId, smtpUserPassword);
+                return new PasswordAuthentication(smtpUserId, outboundDTO.getSmtpUserPassword());
             }
         });
     }

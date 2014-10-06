@@ -48,16 +48,17 @@ public class OutboundMailUtilTest {
     }
 
     /**
+     * TODO
      * Test method for
      * {@link com.sanjay.common.util.OutboundMailUtil#getSmtpSession(java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties)}
      * .
      */
     // @Test
     public final void testGetSmtpSession() {
-        session =
-                mailUtil.getSmtpSession("username@gmail.com", "password", "smtp.gmail.com", "587",
-                        MailTransferProperties.TRUE, MailTransferProperties.FALSE, MailTransferProperties.TRUE,
-                        MailTransferProperties.TRUE);
+        session = null;
+        // mailUtil.getSmtpSession("username@gmail.com", "password", "smtp.gmail.com", "587",
+        // MailTransferProperties.TRUE, MailTransferProperties.FALSE, MailTransferProperties.TRUE,
+        // MailTransferProperties.TRUE);
         assertTrue(session.getDebug());
         assertEquals("smtp.gmail.com", session.getProperty("mail.smtp.host"));
         assertEquals("mail.smtp.port", session.getProperty("587"));

@@ -35,11 +35,6 @@ public final class CommonConstants {
     public static final String EXCEPTION_STRING_APPENDER5 = "null";
     public static final String EXCEPTION_STRING_APPENDER6 = " Additional information associated to exception: ";
 
-    // Regular Expression
-    // TODO modification required.
-    public static final String EMAIL_ID_REGEX = "^[\\w]+[\\w\\.\\-]*@[\\w]+[\\w\\.\\-]*(\\.){1}[a-zA-Z]{1,3}";
-    public static final String URL_REGEX = "";
-
     private CommonConstants() {
 
     }
