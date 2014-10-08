@@ -19,15 +19,16 @@ import org.apache.logging.log4j.Logger;
 import com.sanjay.common.constants.CommonConstants;
 
 /**
- * @author SANJAY
+ * Utility to generate random password, double number, int number with criteria.
  * 
+ * @author SANJAY
+ * @see RandomGeneratorUtil.CombinationOf
  */
-// TODO pending: java documentation, final variable.
 public class RandomGeneratorUtil {
     private static final Logger LOG = LogManager.getLogger(RandomGeneratorUtil.class);
-    private static List<Integer> alphabetList;
-    private static List<Integer> specialCharacterList;
-    private static Random random = new Random();
+    private static final List<Integer> ALPHABET_LIST;
+    private static final List<Integer> SPECIAL_CHAR_LIST;
+    private static final Random RANDOM_OBJ = new Random();
 
     private RandomGeneratorUtil() {
 
@@ -35,35 +36,55 @@ public class RandomGeneratorUtil {
 
     static {
         // Alphabet list
-        alphabetList = new ArrayList<Integer>();
+        ALPHABET_LIST = new ArrayList<Integer>();
         for (int i = 65; i <= 90; i++) {
-            alphabetList.add(i);
+            ALPHABET_LIST.add(i);
         }
         for (int i = 97; i <= 122; i++) {
-            alphabetList.add(i);
+            ALPHABET_LIST.add(i);
         }
-        LOG.trace("alphabetList created");
+        LOG.trace("ALPHABET_LIST created");
         // Special Character List
-        specialCharacterList = new ArrayList<Integer>();
+        SPECIAL_CHAR_LIST = new ArrayList<Integer>();
         for (int i = 33; i <= 64; i++) {
             if ((i > 33 && i < 42) || (i > 43 && i < 58)) {
                 continue;
             }
-            specialCharacterList.add(i);
+            SPECIAL_CHAR_LIST.add(i);
         }
-        LOG.trace("specialCharacterList created");
+        LOG.trace("SPECIAL_CHAR_LIST created");
     }
 
     /**
+     * Enumeration required for password combination {@link RandomGeneratorUtil#generatePassword(int, CombinationOf)}.
      * 
      * @author SANJAY
-     * 
+     * @see RandomGeneratorUtil
      */
     public static enum CombinationOf {
         ALPHABET, NUMBER, ALPHABET_NUMBER, ALPHABET_SPECIALCHARACTER, NUMBER_SPECIALCHARACTER,
         ALPHABET_NUMBER_SPECIALCHARACTER;
     }
 
+    /**
+     * Returns a random {@code String} password of a {@code int} size with {@code CombinationOf} {@link CombinationOf}.
+     * 
+     * @param size {@code int} value of a password, should not less than 3 otherwise IllegalArgumentException will be
+     *            thrown:
+     * 
+     *            <pre>
+     * {@code
+     *  if (size < 3) {
+     *             LOG.error("Password size is less then 3");
+     *             throw new IllegalArgumentException("Invalid password size: " + size);
+     *         }
+     * }
+     * </pre>
+     * @param passwordCombination {@code CombinationOf} enumeration value for password combination.
+     * @return a random {@code String} password of a {@code int} size with {@code CombinationOf} {@link CombinationOf}.
+     * @throws IllegalArgumentException if {@code int size is less than 3} or if
+     *             {@code CombinationOf passwordCombination is null}.
+     */
     public static String generatePassword(final int size, final CombinationOf passwordCombination) {
         LOG.trace("Invoking generatePassword of size" + size + "and CobinationOf: " + passwordCombination);
         if (size < 3) {
@@ -151,15 +172,18 @@ public class RandomGeneratorUtil {
     private static String getPasswordCharacter(final int combination) {
         LOG.trace("Invoking getPasswordCharacter...");
         switch (combination) {
-            case 0: // Alphabet
-                int randomInt = randomIntValue(0, alphabetList.size());
-                final Character alphabet = (char) alphabetList.get(randomInt).intValue();
+            case 0:
+                // Alphabet
+                int randomInt = randomIntValue(0, ALPHABET_LIST.size());
+                final Character alphabet = (char) ALPHABET_LIST.get(randomInt).intValue();
                 return alphabet.toString();
-            case 1: // Number
-                return random.nextInt(10) + "";
-            case 2: // Special character
-                randomInt = randomIntValue(0, specialCharacterList.size());
-                return specialCharacterList.get(randomInt).toString();
+            case 1:
+                // Number
+                return RANDOM_OBJ.nextInt(10) + "";
+            case 2:
+                // Special character
+                randomInt = randomIntValue(0, SPECIAL_CHAR_LIST.size());
+                return SPECIAL_CHAR_LIST.get(randomInt).toString();
             default:
                 LOG.error("Invalid argument: " + combination);
                 throw new IllegalArgumentException("Invalid combination: " + combination);
@@ -176,7 +200,7 @@ public class RandomGeneratorUtil {
         LOG.trace("Invoking generatePin of size: " + size);
         final StringBuilder randomPin = new StringBuilder();
         for (int i = 0; i < Math.abs(size); i++) {
-            randomPin.append(random.nextInt(10));
+            randomPin.append(RANDOM_OBJ.nextInt(10));
         }
         return randomPin.toString();
     }
@@ -219,7 +243,7 @@ public class RandomGeneratorUtil {
      */
     public static int randomIntValue(final int minimumValue, final int maximumValue) {
         LOG.trace("Invoking randomIntValue with minimumValue: " + minimumValue + ", maximumValue: " + maximumValue);
-        return minimumValue + random.nextInt(maximumValue - minimumValue);
+        return minimumValue + RANDOM_OBJ.nextInt(maximumValue - minimumValue);
     }
 
     /**
