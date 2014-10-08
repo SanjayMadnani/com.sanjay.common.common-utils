@@ -11,6 +11,8 @@ package com.sanjay.common.util;
 
 import static org.junit.Assert.assertTrue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import com.sanjay.common.util.RandomGeneratorUtil.CombinationOf;
@@ -21,6 +23,8 @@ import com.sanjay.common.util.RandomGeneratorUtil.CombinationOf;
  */
 public class RandomGeneratorUtilTest {
 
+    private static final Logger LOG = LogManager.getLogger(RandomGeneratorUtilTest.class);
+
     /**
      * Test method for
      * {@link com.sanjay.common.util.RandomGeneratorUtil#generatePassword(int, com.sanjay.common.util.RandomGeneratorUtil.CombinationOf)}
@@ -28,6 +32,7 @@ public class RandomGeneratorUtilTest {
      */
     @Test
     public final void testGeneratePassword() {
+        LOG.trace("Invoking testGeneratePassword...");
         String password = RandomGeneratorUtil.generatePassword(6, CombinationOf.ALPHABET);
         System.out.println("Passowrd Alphabet: " + password);
         assertTrue(password.length() == 6);
@@ -42,6 +47,7 @@ public class RandomGeneratorUtilTest {
      */
     @Test
     public final void testGeneratePinInt() {
+        LOG.trace("Invoking testGeneratePinInt...");
         String pin = RandomGeneratorUtil.generatePin(6);
         System.out.println("Int Pin: " + pin);
         assertTrue(RandomGeneratorUtil.generatePin(5).length() == 5);
@@ -52,6 +58,7 @@ public class RandomGeneratorUtilTest {
      */
     @Test
     public final void testGeneratePinIntInt() {
+        LOG.trace("Invoking testGeneratePinIntInt...");
         String pin = RandomGeneratorUtil.generatePin(2, 6);
         System.out.println("Min Max String Pin: " + pin);
         assertTrue(pin.length() >= 2 && pin.length() <= 6);
@@ -62,6 +69,7 @@ public class RandomGeneratorUtilTest {
      */
     @Test
     public final void testRandomIntValue() {
+        LOG.trace("Invoking testRandomIntValue...");
         int randomValue = RandomGeneratorUtil.randomIntValue(15, 700);
         System.out.println("RandomIntValue: " + randomValue);
         assertTrue(randomValue >= 15 && randomValue <= 700);
@@ -72,6 +80,7 @@ public class RandomGeneratorUtilTest {
      */
     @Test
     public final void testRandomDoubleValue() {
+        LOG.trace("Invoking testRandomDoubleValue...");
         double randomValue = RandomGeneratorUtil.randomDoubleValue(10.23, 81.678);
         System.out.println("Random Double Value: " + randomValue);
         assertTrue(randomValue >= 10.23 && randomValue <= 81.678);

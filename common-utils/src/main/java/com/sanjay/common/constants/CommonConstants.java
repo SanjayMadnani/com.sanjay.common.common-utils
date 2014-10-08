@@ -10,6 +10,8 @@
 package com.sanjay.common.constants;
 
 /**
+ * Keeps all required common constants.
+ * 
  * @author SANJAY
  * 
  */
@@ -34,7 +36,7 @@ public final class CommonConstants {
     public static final String EXCEPTION_STRING_APPENDER4 = ". Root Cause: ";
     public static final String EXCEPTION_STRING_APPENDER5 = "null";
     public static final String EXCEPTION_STRING_APPENDER6 = " Additional information associated to exception: ";
-
+    public static final String EXCEPTION_TRACE_LOG = "Invoking Application Exception with Parameters...";
     // Regular Expression
     public static final String CONTAINS_ALPHABATE = "(.*?)[a-zA-Z]+(.*?)";
     public static final String CONTAINS_NUMBER = "(.*?)(\\d)+(.*?)";

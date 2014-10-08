@@ -81,7 +81,7 @@ public final class PropertyUtil {
      * @param key the key whose associated value is to be returned.
      * @return value corresponding to key.
      */
-    public Object getValue(String key) {
+    public Object getValue(final String key) {
         LOGGER.trace("Invoking getValue by passing key: " + key + "...");
         return properties.get(key);
     }

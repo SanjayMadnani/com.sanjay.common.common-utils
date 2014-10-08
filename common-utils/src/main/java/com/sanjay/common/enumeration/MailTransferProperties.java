@@ -10,18 +10,26 @@
 package com.sanjay.common.enumeration;
 
 /**
- * @author sanjay.madnani
+ * Contains String representation of boolean properties required for sending a mail.
  * 
+ * @author sanjay.madnani
+ * @see com.sanjay.common.dto.OutboundDTO
+ * @see com.sanjay.common.util.OutboundMailUtil
  */
 public enum MailTransferProperties {
     TRUE ("true"), FALSE ("false");
 
-    private String strMailTransferProperty;
+    private final String strMailTransferProperty;
 
-    private MailTransferProperties(String property) {
+    private MailTransferProperties(final String property) {
         this.strMailTransferProperty = property;
     }
 
+    /**
+     * Return caller enumeration assign string value.
+     * 
+     * @return string value corresponding to a caller enumeration.
+     */
     public String strMailTransferProperty() {
         return this.strMailTransferProperty;
     }

@@ -10,8 +10,10 @@
 package com.sanjay.common.exception;
 
 /**
- * @author sanjay.madnani
+ * Contain Severities for ApplicationException.
  * 
+ * @author sanjay.madnani
+ * @see ApplicationException
  */
 public enum ApplicationSeverity {
     DEBUG, INFO, WARN, ERROR, FATAL

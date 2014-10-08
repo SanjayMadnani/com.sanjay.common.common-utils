@@ -17,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 import com.sanjay.common.constants.CommonConstants;
 
 /**
+ * Compile time exception.
+ * 
  * @author SANJAY
  * 
  */
@@ -59,7 +61,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
             final String... params) {
         super(cause);
-        LOGGER.trace("Invoking Application Exception with Parameters: ", errorKey, severity, cause, params);
+        LOGGER.trace(CommonConstants.EXCEPTION_TRACE_LOG, errorKey, severity, cause, params);
         this.errorKey = errorKey;
         this.severity = severity;
         this.params = params;
@@ -77,7 +79,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause,
             final Object... objects) {
         super(cause);
-        LOGGER.trace("Invoking Application Exception with Parameters...", errorKey, severity, cause, objects);
+        LOGGER.trace(CommonConstants.EXCEPTION_TRACE_LOG, errorKey, severity, cause, objects);
         this.errorKey = errorKey;
         this.severity = severity;
         this.objects = objects;
@@ -93,7 +95,7 @@ public class ApplicationException extends Exception {
      */
     public ApplicationException(final String errorKey, final ApplicationSeverity severity, final Throwable cause) {
         super(cause);
-        LOGGER.trace("Invoking Application Exception with Parameters...", errorKey, severity);
+        LOGGER.trace(CommonConstants.EXCEPTION_TRACE_LOG, errorKey, severity);
         this.errorKey = errorKey;
         this.severity = severity;
     }
@@ -110,7 +112,7 @@ public class ApplicationException extends Exception {
     public ApplicationException(final int errorCode, final ApplicationSeverity severity, final Throwable cause,
             final Object... objects) {
         super(cause);
-        LOGGER.trace("Invoking Application Exception with Parameters...", errorCode, severity, objects);
+        LOGGER.trace(CommonConstants.EXCEPTION_TRACE_LOG, errorCode, severity, objects);
         this.errorCode = errorCode;
         this.severity = severity;
         this.objects = objects;

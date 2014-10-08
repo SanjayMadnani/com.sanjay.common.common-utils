@@ -12,21 +12,43 @@ package com.sanjay.common.enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Keeps protocols names for file transfer.
+ * 
+ * @author SANJAY
+ * @see com.sanjay.common.util.FileUtil#transferFile(String, String, String, java.io.File, FileTransferProtocol)
+ * 
+ */
 public enum FileTransferProtocol {
+    /**
+     * Secure File Transfer Protocol
+     */
     SFTP ("sftp");
 
     private static Map<String, FileTransferProtocol> mapRepresentation;
-    private String ftpStringRepresentation;
+    private final String ftpStringRepresentation;
 
-    private FileTransferProtocol(String ftpStringRepresentation) {
+    private FileTransferProtocol(final String ftpStringRepresentation) {
         this.ftpStringRepresentation = ftpStringRepresentation;
     }
 
+    /**
+     * Return String value of a caller enumeration.
+     * 
+     * @return String value of a enumeration.
+     */
     public String ftpStringRepresentation() {
         return this.ftpStringRepresentation;
     }
 
-    public static FileTransferProtocol valueOfFtpStringRepresentation(String ftpStringRepresentation) {
+    /**
+     * Maintains all Enumeration in a map where key is String value of enumeration and map value is enumeration
+     * constant.
+     * 
+     * @param ftpStringRepresentation String value corresponding to key.
+     * @return Enumeration constant corresponding to string key.
+     */
+    public static FileTransferProtocol valueOfFtpStringRepresentation(final String ftpStringRepresentation) {
         if (mapRepresentation == null) {
             mapRepresentation = new HashMap<String, FileTransferProtocol>();
             for (FileTransferProtocol types : values()) {

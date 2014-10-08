@@ -13,14 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sanjay.common.constants.CommonConstants;
 
 /**
  * @author SANJAY
  * 
  */
-// TODO Logger & Exception implementation pending.
+// TODO pending: java documentation, final variable.
 public class RandomGeneratorUtil {
+    private static final Logger LOG = LogManager.getLogger(RandomGeneratorUtil.class);
     private static List<Integer> alphabetList;
     private static List<Integer> specialCharacterList;
     private static Random random = new Random();
@@ -38,6 +42,7 @@ public class RandomGeneratorUtil {
         for (int i = 97; i <= 122; i++) {
             alphabetList.add(i);
         }
+        LOG.trace("alphabetList created");
         // Special Character List
         specialCharacterList = new ArrayList<Integer>();
         for (int i = 33; i <= 64; i++) {
@@ -46,17 +51,24 @@ public class RandomGeneratorUtil {
             }
             specialCharacterList.add(i);
         }
+        LOG.trace("specialCharacterList created");
     }
 
+    /**
+     * 
+     * @author SANJAY
+     * 
+     */
     public static enum CombinationOf {
         ALPHABET, NUMBER, ALPHABET_NUMBER, ALPHABET_SPECIALCHARACTER, NUMBER_SPECIALCHARACTER,
         ALPHABET_NUMBER_SPECIALCHARACTER;
     }
 
-    // TODO Implementation Pending.
-    public static String generatePassword(int size, CombinationOf passwordCombination) {
+    public static String generatePassword(final int size, final CombinationOf passwordCombination) {
+        LOG.trace("Invoking generatePassword of size" + size + "and CobinationOf: " + passwordCombination);
         if (size < 3) {
-            // TODO write log and throw exception.
+            LOG.error("Password size is less then 3");
+            throw new IllegalArgumentException("Invalid password size: " + size);
         }
         StringBuilder passwordBuffer = new StringBuilder();
         for (int i = 0; i < size; i++) {
@@ -72,7 +84,7 @@ public class RandomGeneratorUtil {
                     break;
                 case ALPHABET_SPECIALCHARACTER:
                     int randomNo = randomIntValue(0, 2);
-                    String randomValue = (randomNo == 0) ? getPasswordCharacter(0) : getPasswordCharacter(2);
+                    final String randomValue = (randomNo == 0) ? getPasswordCharacter(0) : getPasswordCharacter(2);
                     passwordBuffer.append(randomValue);
                     break;
                 case NUMBER_SPECIALCHARACTER:
@@ -82,17 +94,15 @@ public class RandomGeneratorUtil {
                     passwordBuffer.append(getPasswordCharacter(randomIntValue(0, 3)));
                     break;
                 default:
-                    // TODO throw Exception
-                    break;
+                    LOG.error("Invalid argument Password combination: " + passwordCombination);
+                    throw new IllegalArgumentException("Invalid password combincation: " + passwordCombination);
             }
         }
-        return correctInvalidPassword(passwordBuffer, passwordCombination);
+        return correctPassword(passwordBuffer.toString(), passwordCombination);
     }
 
-    private static String correctInvalidPassword(final StringBuilder passwordBuffer,
-                                                 final CombinationOf passwordCombination) {
-        String strPassword = passwordBuffer.toString();
-
+    private static String correctPassword(final String strPassword, final CombinationOf passwordCombination) {
+        LOG.trace("Invoking correctPassword...");
         switch (passwordCombination) {
             case ALPHABET_NUMBER:
                 if ( !strPassword.matches(CommonConstants.CONTAINS_ALPHABATE)) {
@@ -138,45 +148,91 @@ public class RandomGeneratorUtil {
         return strPassword;
     }
 
-    // TODO correct the functionality.
-    private static String getPasswordCharacter(int combination) {
+    private static String getPasswordCharacter(final int combination) {
+        LOG.trace("Invoking getPasswordCharacter...");
         switch (combination) {
-        // Alphabet
-            case 0:
+            case 0: // Alphabet
                 int randomInt = randomIntValue(0, alphabetList.size());
-                Character alphabet = (char) alphabetList.get(randomInt).intValue();
+                final Character alphabet = (char) alphabetList.get(randomInt).intValue();
                 return alphabet.toString();
-                // Number
-            case 1:
+            case 1: // Number
                 return random.nextInt(10) + "";
-                // Special character
-            case 2:
+            case 2: // Special character
                 randomInt = randomIntValue(0, specialCharacterList.size());
                 return specialCharacterList.get(randomInt).toString();
             default:
-                // TODO throw illegal argument exception and error log as well.
-                return null;
+                LOG.error("Invalid argument: " + combination);
+                throw new IllegalArgumentException("Invalid combination: " + combination);
         }
     }
 
-    public static String generatePin(int size) {
-        StringBuilder randomPin = new StringBuilder();
-        for (int i = 0; i < size; i++) {
+    /**
+     * Returns a random {@code String} representation of int value of length {@code int} abs size {@link Math#abs(int)}.
+     * 
+     * @param size the length of random number to be returned as String.
+     * @return a random {@code String} value of length {@code int} abs size {@link Math#abs(int)}.
+     */
+    public static String generatePin(final int size) {
+        LOG.trace("Invoking generatePin of size: " + size);
+        final StringBuilder randomPin = new StringBuilder();
+        for (int i = 0; i < Math.abs(size); i++) {
             randomPin.append(random.nextInt(10));
         }
         return randomPin.toString();
     }
 
-    public static String generatePin(int minimumSize, int maximumSize) {
-        int size = randomIntValue(minimumSize, maximumSize) + 1;
+    /**
+     * Returns a random {@code String} representation of int value of random length from {@code minimumSize} to
+     * {@code maximumSize}.
+     * 
+     * @param minimumSize (inclusive) minimum length of random number.
+     * @param maximumSize (exclusive) maximum length of random number.
+     * @return a random {@code String} representation of int value of random length from {@code minimumSize} to
+     *         {@code maximumSize}.
+     * @throws IllegalArgumentException as if:
+     * 
+     *             <pre>
+     * {@code maximumSize - minimumSize} is not positive.
+     * </pre>
+     * @see RandomGeneratorUtil#randomIntValue(int, int)
+     * @see RandomGeneratorUtil#generatePin(int)
+     */
+    public static String generatePin(final int minimumSize, final int maximumSize) {
+        LOG.trace("Invoking generatePin with minimumSize: " + maximumSize + ", MaximumSize: " + maximumSize);
+        final int size = randomIntValue(minimumSize, maximumSize);
         return generatePin(size);
     }
 
-    public static int randomIntValue(int minimumValue, int maximumValue) {
+    /**
+     * Returns a {@code int} value between {@code int minimumValue}(inclusive) and the {@code int maximumValue}
+     * (exclusive).
+     * 
+     * @param minimumValue (inclusive) random number minimum value.
+     * @param maximumValue (exclusive) random number value less than.
+     * @return a {@code int} value between {@code int minimumValue}(inclusive) and the {@code int maximumValue}
+     *         (exclusive).
+     * @throws IllegalArgumentException as if:
+     * 
+     *             <pre>
+     * {@code maximumValue - minimumValue} is not positive.
+     * </pre>
+     */
+    public static int randomIntValue(final int minimumValue, final int maximumValue) {
+        LOG.trace("Invoking randomIntValue with minimumValue: " + minimumValue + ", maximumValue: " + maximumValue);
         return minimumValue + random.nextInt(maximumValue - minimumValue);
     }
 
-    public static double randomDoubleValue(double minimumValue, double maximumValue) {
+    /**
+     * Returns a {@code double} value , greater than or equal to {@code double minimumValue} and less than
+     * {@code double maximumValue}.
+     * 
+     * @param minimumValue (inclusive) random number minimum value.
+     * @param maximumValue (exclusive) random number value less than.
+     * @return a {@code double} value , greater than or equal to {@code double minimumValue} and less than
+     *         {@code double maximumValue}.
+     */
+    public static double randomDoubleValue(final double minimumValue, final double maximumValue) {
+        LOG.trace("Invoking randomDoubleValue with minimumValue: " + minimumValue + ", maximumValue: " + maximumValue);
         return minimumValue + Math.random() * (maximumValue - minimumValue);
     }
 }

@@ -36,13 +36,15 @@ import com.sanjay.common.exception.ApplicationException;
 import com.sanjay.common.exception.ApplicationSeverity;
 
 /**
+ * Utility for file operations.
+ * 
  * @author SANJAY
  * 
  */
 public final class FileUtil {
     private static final Logger LOGGER = LogManager.getLogger(FileUtil.class);
 
-    private static boolean isValidOperation(File file) {
+    private static boolean isValidOperation(final File file) {
         LOGGER.trace("Invoking isValidOperation...");
         if (file != null && file.exists() && file.isFile()) {
             LOGGER.trace("File " + file.getName() + " is Valid to perform Operation.");
@@ -54,11 +56,12 @@ public final class FileUtil {
     }
 
     /**
+     * Return File size in String with GB, MB, KB or bytes suffix.
      * 
-     * @param file
-     * @return
+     * @param file File to get its size.
+     * @return String size of a file.
      */
-    public static String getFileSize(File file) {
+    public static String getFileSize(final File file) {
         LOGGER.trace("Invoking getFileSize...");
         if (isValidOperation(file)) {
             long fileSize = file.length();
@@ -77,6 +80,14 @@ public final class FileUtil {
 
     }
 
+    /**
+     * Compress a file by gz extension with same file name.
+     * 
+     * @param inputFile File to compress.
+     * @param gzipOutputDir String directory to keep compress file.
+     * @return File compress file.
+     * @throws ApplicationException
+     */
     public static File compressToGzipFormat(final File inputFile, final String gzipOutputDir)
         throws ApplicationException {
         LOGGER.trace("Invoking compressToGzipFormat...");
@@ -97,6 +108,14 @@ public final class FileUtil {
         }
     }
 
+    /**
+     * Decompress a gz compressed gz file in a fileOutputDir.
+     * 
+     * @param gzipFile File to decompress.
+     * @param fileOutputDir String directory to keep decompress file.
+     * @return Decompressed File.
+     * @throws ApplicationException
+     */
     public static File decompressGzipFile(final File gzipFile, final String fileOutputDir) throws ApplicationException {
         LOGGER.trace("Invoking decompressGzipFile...");
         try (final FileInputStream fis = new FileInputStream(gzipFile);
@@ -116,7 +135,12 @@ public final class FileUtil {
         }
     }
 
-    public static void deleteFile(File file) {
+    /**
+     * Delete a file immediately if not deleted immediately then delete on exit.
+     * 
+     * @param file File to delete.
+     */
+    public static void deleteFile(final File file) {
         LOGGER.trace("Invoking deleteFile...");
         if (isValidOperation(file)) {
             if ( !file.delete()) {
@@ -131,12 +155,12 @@ public final class FileUtil {
     /**
      * Transfer a file to remote destination via JSCH library using sFTP protocol
      * 
-     * @param username
-     * @param password
-     * @param host
-     * @param file
-     * @param transferProtocol
-     * @return
+     * @param String remote SFTP server user name.
+     * @param String remote SFTP server user password
+     * @param String remote SFTP server IP address or host name.
+     * @param file File to transfer to SFTP Server.
+     * @param transferProtocol protocol to transfer a file. {@link FileTransferProtocol}
+     * @return boolean true if file is transfered otherwise false.
      * @throws ApplicationException
      */
     public boolean transferFile(final String username, final String password, final String host, final File file,
@@ -174,7 +198,15 @@ public final class FileUtil {
         }
     }
 
-    public static boolean copyFile(File srcFile, File destLocation) throws IOException {
+    /**
+     * Copy a source file to a destination directory.
+     * 
+     * @param srcFile File to copy.
+     * @param File destLocation to keep a copy.
+     * @return boolean true if file is copied else false.
+     * @throws IOException
+     */
+    public static boolean copyFile(final File srcFile, final File destLocation) throws IOException {
         LOGGER.trace("Invoking copyFile...");
         if (isValidOperation(srcFile)) {
             if ( !destLocation.exists()) {

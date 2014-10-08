@@ -29,18 +29,24 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sanjay.common.dto.OutboundDTO;
 import com.sanjay.common.enumeration.MailTransferProperties;
 
 /**
- * @author sanjay.madnani
+ * Send mails using SMTP session.
  * 
+ * @author sanjay.madnani
+ * @see com.sanjay.common.dto.OutboundDTO
  */
 public class OutboundMailUtil {
+    private static final Logger LOG = LogManager.getLogger(OutboundMailUtil.class);
 
     private String smtpUserId = null;
 
-    private <T> boolean isNull(List<T> list) {
+    private <T> boolean isNull(final List<T> list) {
         if ((list != null) && ( !list.isEmpty())) {
             return false;
         }
@@ -50,17 +56,12 @@ public class OutboundMailUtil {
     /**
      * Create a Simple Mail transfer mail protocol session required for sending mail.
      * 
-     * @param smtpUserId String sender email id.
-     * @param smtpUserPassword String Sender email password.
-     * @param smtpHost String smtp host address.
-     * @param smtpPort String port number.
-     * @param smtpAuth MailTransferProperties true or false.
-     * @param smtpSslEnable MailTransferProperties true or false.
-     * @param smtpStarttlsEnable MailTransferProperties true or false.
-     * @param debugMode MailTransferProperties true or false.
+     * @param outboundDTO keeps details like id, password, host, port and so on.
+     *            {@link com.sanjay.common.dto.OutboundDTO#OutboundDTO(String, String, String, String, MailTransferProperties, MailTransferProperties, MailTransferProperties)}
      * @return smtpSession javax.mail.Session
      */
     public Session getSmtpSession(final OutboundDTO outboundDTO) {
+        LOG.trace("Invoking getSmtpSession by providing details: " + outboundDTO.toString() + " ...");
         this.smtpUserId = outboundDTO.getSmtpUserId();
         Properties props = new Properties();
         props.put("mail.smtp.host", outboundDTO.getSmtpHost());
@@ -91,13 +92,16 @@ public class OutboundMailUtil {
      * @param msgSubject String subject line of mail.
      * @param msgBody String TEXT/HTML message to deliver.
      * @param file (Optional) File to send as attachment.
+     * @return boolean true is mail is send otherwise false.
      * @throws MessagingException.
      */
     public boolean sendMail(final Session smtpSession, final List<String> toList, final List<String> ccList,
                             final List<String> bccList, final String msgSubject, final String msgBody, final File file)
         throws MessagingException {
+        LOG.trace("Invoking SendMail...");
         // Creates MimeMessage by SMTP Session.
         final MimeMessage message = new MimeMessage(smtpSession);
+        LOG.debug("MimeMessage is created by smtpSession");
         message.setFrom(new InternetAddress(this.smtpUserId));
         final Address[] toAddress = new InternetAddress[toList.size()];
         for (int i = 0; i < toAddress.length; i++) {
@@ -105,6 +109,7 @@ public class OutboundMailUtil {
         }
         // sets the to list for sending mail.
         message.addRecipients(Message.RecipientType.TO, toAddress);
+        LOG.debug("toList Recipients added");
         if ( !isNull(ccList)) {
             final Address[] toCcAddress = new InternetAddress[ccList.size()];
             for (int i = 0; i < toCcAddress.length; i++) {
@@ -112,6 +117,7 @@ public class OutboundMailUtil {
             }
             // sets the cc list for sending mail.
             message.addRecipients(Message.RecipientType.CC, toCcAddress);
+            LOG.debug("ccList Recipients added");
         }
 
         if ( !isNull(bccList)) {
@@ -121,6 +127,7 @@ public class OutboundMailUtil {
             }
             // sets the bcc list for sending mail.
             message.addRecipients(Message.RecipientType.BCC, toBccAddress);
+            LOG.debug("bccList Recipients added");
         }
 
         final Multipart multipart = new MimeMultipart();
@@ -131,15 +138,20 @@ public class OutboundMailUtil {
             messageBodyPart2.setDataHandler(new DataHandler(source));
             messageBodyPart2.setFileName(file.getName());
             multipart.addBodyPart(messageBodyPart2);
+            LOG.debug(file.getName() + " file is attached.");
         }
         message.setSubject(msgSubject);
-        message.setSentDate(new java.util.Date());
+        java.util.Date sentDate = new java.util.Date();
+        message.setSentDate(sentDate);
+        LOG.debug("Subject : " + msgSubject + " is set for message with sentDate: " + sentDate);
         final BodyPart messageBodyPart1 = new MimeBodyPart();
         // Sends the message in html format.
         messageBodyPart1.setContent(msgBody, "text/html");
+        LOG.trace("Message Body is set to text/html");
         multipart.addBodyPart(messageBodyPart1);
         message.setContent(multipart);
         Transport.send(message);
+        LOG.debug("Message sent successfully.");
         return true;
     }
 

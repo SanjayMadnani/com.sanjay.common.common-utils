@@ -10,13 +10,12 @@
 package com.sanjay.common.dto;
 
 import com.sanjay.common.enumeration.MailTransferProperties;
-import com.sanjay.common.util.OutboundMailUtil;
 
 /**
  * Required for Out bound service to send mail.
  * 
  * @author SANJAY
- * @see OutboundMailUtil
+ * @see com.sanjay.common.util.OutboundMailUtil
  * @see MailTransferProperties
  */
 public class OutboundDTO {
@@ -28,11 +27,11 @@ public class OutboundDTO {
     private final MailTransferProperties smtpAuth;
     private final MailTransferProperties smtpSslEnable;
     private final MailTransferProperties smtpStarttlsEnable;
-    private final MailTransferProperties debugMode;
+    private MailTransferProperties debugMode = MailTransferProperties.FALSE;
 
     /**
      * Create a object required for OutboundMailUtil
-     * {@link OutboundMailUtil#getSmtpSession(String, String, String, String, MailTransferProperties, MailTransferProperties, MailTransferProperties, MailTransferProperties)}
+     * {@link com.sanjay.common.util.OutboundMailUtil#getSmtpSession(String, String, String, String, MailTransferProperties, MailTransferProperties, MailTransferProperties, MailTransferProperties)}
      * .
      * 
      * @param smtpUserId String sender email id.
@@ -43,11 +42,10 @@ public class OutboundDTO {
      * @param smtpSslEnable MailTransferProperties true or false.
      * @param smtpStarttlsEnable MailTransferProperties true or false.
      * @param debugMode MailTransferProperties true or false.
-     * @return smtpSession javax.mail.Session
      */
     public OutboundDTO(final String smtpUserId, final String smtpUserPassword, final String smtpHost,
             final String smtpPort, final MailTransferProperties smtpAuth, final MailTransferProperties smtpSslEnable,
-            final MailTransferProperties smtpStarttlsEnable, final MailTransferProperties debugMode) {
+            final MailTransferProperties smtpStarttlsEnable) {
         super();
         this.smtpUserId = smtpUserId;
         this.smtpUserPassword = smtpUserPassword;
@@ -56,7 +54,6 @@ public class OutboundDTO {
         this.smtpAuth = smtpAuth;
         this.smtpSslEnable = smtpSslEnable;
         this.smtpStarttlsEnable = smtpStarttlsEnable;
-        this.debugMode = debugMode;
     }
 
     /**
@@ -113,6 +110,25 @@ public class OutboundDTO {
      */
     public MailTransferProperties getDebugMode() {
         return debugMode;
+    }
+
+    /**
+     * @param debugMode the debugMode to set
+     */
+    public void setDebugMode(MailTransferProperties debugMode) {
+        this.debugMode = debugMode;
+    }
+
+    /* (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString() */
+    @Override
+    public String toString() {
+        return "OutboundDTO [smtpUserId=" + smtpUserId + ", smtpUserPassword=" + smtpUserPassword + ", smtpHost=" +
+                smtpHost + ", smtpPort=" + smtpPort + ", smtpAuth=" + smtpAuth.strMailTransferProperty() +
+                ", smtpSslEnable=" + smtpSslEnable.strMailTransferProperty() + ", smtpStarttlsEnable=" +
+                smtpStarttlsEnable.strMailTransferProperty() + ", debugMode=" + debugMode.strMailTransferProperty() +
+                "]";
     }
 
 }
