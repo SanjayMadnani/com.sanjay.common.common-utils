@@ -15,6 +15,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
+ * Test case for {@link FileTransferProtocol}.
+ * 
  * @author SANJAY
  * 
  */

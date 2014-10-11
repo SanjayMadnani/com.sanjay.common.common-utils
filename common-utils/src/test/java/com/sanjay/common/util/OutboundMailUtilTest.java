@@ -1,6 +1,12 @@
-/**
+/* Copyright (C) 2014, 2015 Sanjay Madnani
  * 
- */
+ * This file is free to use: you can redistribute it and/or modify it under the terms of the GPL General Public License
+ * V2 as published by the Free Software Foundation, subject to the following conditions:
+ * 
+ * The above copyright notice should never be changed and should always included wherever this file is used.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
+ * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
@@ -22,6 +28,8 @@ import com.sanjay.common.dto.OutboundMail;
 import com.sanjay.common.enumeration.MailTransferProperties;
 
 /**
+ * Test case for {@link OutboundMailUtil}.
+ * 
  * @author sanjay.madnani
  * 
  */
@@ -77,7 +85,7 @@ public class OutboundMailUtilTest {
      * @throws MessagingException
      */
     @Test
-    public final void testSendMail() throws MessagingException {
+    public final void testSendMail() {
         Session session = mailUtil.getSmtpSession(outboundMail);
         List<String> toList = new ArrayList<String>();
         toList.add("sanjay.madnani@outlook.com");
@@ -88,7 +96,11 @@ public class OutboundMailUtilTest {
         String msgSubject = "Java JUnit test case";
         String msgBody = "Ignore this mail after reciving.<br/><b>Just for testing purpose only.</b>";
         File file = null;
-        assertTrue(mailUtil.sendMail(session, toList, ccList, bccList, msgSubject, msgBody, file));
+        try {
+            assertTrue(mailUtil.sendMail(session, toList, ccList, bccList, msgSubject, msgBody, file));
+        } catch (MessagingException ex) {
+            assertEquals("Unknown SMTP host: " + session.getProperty("mail.smtp.host"), ex.getMessage());
+        }
     }
 
 }

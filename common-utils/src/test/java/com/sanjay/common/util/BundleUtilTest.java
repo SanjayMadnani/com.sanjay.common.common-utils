@@ -10,14 +10,16 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import com.sanjay.common.exception.ApplicationException;
 
 /**
+ * Test case for {@link BundleUtil}.
+ * 
  * @author SANJAY
  * 
  */
@@ -30,7 +32,7 @@ public class BundleUtilTest {
      */
     @Before
     public void setUp() throws Exception {
-        bundleUtil = new BundleUtil("");
+        bundleUtil = new BundleUtil("test-common-messages");
     }
 
     /**
@@ -46,10 +48,9 @@ public class BundleUtilTest {
      * 
      * @throws ApplicationException
      */
-    // @Test
+    @Test
     public void testGetStringMessage() throws ApplicationException {
-        assertEquals("", bundleUtil.getStringMessage(""));
-        fail("Not yet implemented");
+        assertEquals("MOBILE1000: Mobile Number is Invalid.", bundleUtil.getStringMessage("ERROR.MOBILE.1000"));
     }
 
     /**
@@ -58,12 +59,11 @@ public class BundleUtilTest {
      * 
      * @throws ApplicationException
      */
-    // @Test
+    @Test
     public void testGetFormatedMessage() throws ApplicationException {
-        String actualResult = bundleUtil.getFormatedMessage("", "", "");
-        String expectedResult = "";
+        String actualResult = bundleUtil.getFormatedMessage("ACK.SUCCESS.1000", "user1", "454585");
+        String expectedResult = "Dear user1, Your Registration Id is 454585.";
         assertEquals(expectedResult, actualResult);
-        fail("Not yet implemented");
     }
 
 }

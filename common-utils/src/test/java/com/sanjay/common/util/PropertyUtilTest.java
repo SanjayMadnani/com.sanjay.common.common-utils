@@ -10,12 +10,14 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
+ * Test case for {@link PropertyUtil}.
+ * 
  * @author SANJAY
  * 
  */
@@ -29,8 +31,8 @@ public class PropertyUtilTest {
      */
     @Before
     public void setUp() throws Exception {
-        propertyUtil2 = new PropertyUtil("");
-        propertyUtil1 = new PropertyUtil("", "");
+        propertyUtil2 = new PropertyUtil("test-common-settings.properties");
+        propertyUtil1 = new PropertyUtil("src/test/resources", "test-common-settings.properties");
     }
 
     /**
@@ -45,11 +47,10 @@ public class PropertyUtilTest {
     /**
      * Test method for {@link com.sanjay.common.util.PropertyUtil#getValue(java.lang.String)}.
      */
-    // @Test
+    @Test
     public void testGetValue() {
-        assertEquals("", propertyUtil1.getValue(""));
-        assertEquals("", propertyUtil2.getValue(""));
-        fail("Not yet implemented");
+        assertEquals("smtp.yahoo.com", propertyUtil1.getValue("email.smpt.host"));
+        assertEquals("smtp.yahoo.com", propertyUtil2.getValue("email.smpt.host"));
     }
 
 }

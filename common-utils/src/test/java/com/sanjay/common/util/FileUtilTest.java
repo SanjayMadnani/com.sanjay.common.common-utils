@@ -22,6 +22,8 @@ import org.junit.Test;
 import com.sanjay.common.exception.ApplicationException;
 
 /**
+ * Test case for {@link FileUtil}
+ * 
  * @author sanjay.madnani
  * 
  */

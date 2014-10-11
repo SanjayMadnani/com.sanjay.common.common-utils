@@ -82,8 +82,7 @@ public class RandomGeneratorUtil {
      * </pre>
      * @param passwordCombination {@code CombinationOf} enumeration value for password combination.
      * @return a random {@code String} password of a {@code int} size with {@code CombinationOf} {@link CombinationOf}.
-     * @throws IllegalArgumentException if {@code int size is less than 3} or if
-     *             {@code CombinationOf passwordCombination is null}.
+     * @throws IllegalArgumentException if {@code int size is less than 3}.
      */
     public static String generatePassword(final int size, final CombinationOf passwordCombination) {
         LOG.trace("Invoking generatePassword of size" + size + "and CobinationOf: " + passwordCombination);
@@ -115,8 +114,7 @@ public class RandomGeneratorUtil {
                     passwordBuffer.append(getPasswordCharacter(randomIntValue(0, 3)));
                     break;
                 default:
-                    LOG.error("Invalid argument Password combination: " + passwordCombination);
-                    throw new IllegalArgumentException("Invalid password combincation: " + passwordCombination);
+                    break;
             }
         }
         return correctPassword(passwordBuffer.toString(), passwordCombination);
@@ -131,7 +129,7 @@ public class RandomGeneratorUtil {
                             getPasswordCharacter(0).charAt(0));
                 } else if ( !strPassword.matches(CommonConstants.CONTAINS_NUMBER)) {
                     strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
-                            getPasswordCharacter(1).charAt(1));
+                            getPasswordCharacter(1).charAt(0));
                 }
                 break;
             case ALPHABET_SPECIALCHARACTER:
@@ -140,16 +138,16 @@ public class RandomGeneratorUtil {
                             getPasswordCharacter(0).charAt(0));
                 } else if ( !strPassword.matches(CommonConstants.CONTAINS_SPECIAL_CHAR)) {
                     strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
-                            getPasswordCharacter(1).charAt(2));
+                            getPasswordCharacter(2).charAt(0));
                 }
                 break;
             case NUMBER_SPECIALCHARACTER:
                 if ( !strPassword.matches(CommonConstants.CONTAINS_NUMBER)) {
                     strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
-                            getPasswordCharacter(1).charAt(1));
+                            getPasswordCharacter(1).charAt(0));
                 } else if ( !strPassword.matches(CommonConstants.CONTAINS_SPECIAL_CHAR)) {
                     strPassword.replace(strPassword.charAt(randomIntValue(0, strPassword.length())),
-                            getPasswordCharacter(1).charAt(2));
+                            getPasswordCharacter(2).charAt(0));
                 }
                 break;
             case ALPHABET_NUMBER_SPECIALCHARACTER:
@@ -157,10 +155,10 @@ public class RandomGeneratorUtil {
                     strPassword.replace(strPassword.charAt(0), getPasswordCharacter(0).charAt(0));
                 }
                 if ( !strPassword.matches(CommonConstants.CONTAINS_NUMBER)) {
-                    strPassword.replace(strPassword.charAt(1), getPasswordCharacter(1).charAt(1));
+                    strPassword.replace(strPassword.charAt(1), getPasswordCharacter(1).charAt(0));
                 }
                 if ( !strPassword.matches(CommonConstants.CONTAINS_SPECIAL_CHAR)) {
-                    strPassword.replace(strPassword.charAt(2), getPasswordCharacter(1).charAt(2));
+                    strPassword.replace(strPassword.charAt(2), getPasswordCharacter(2).charAt(0));
                 }
                 break;
             default:
@@ -183,7 +181,8 @@ public class RandomGeneratorUtil {
             case 2:
                 // Special character
                 randomInt = randomIntValue(0, SPECIAL_CHAR_LIST.size());
-                return SPECIAL_CHAR_LIST.get(randomInt).toString();
+                final Character specialCharacter = (char) SPECIAL_CHAR_LIST.get(randomInt).intValue();
+                return specialCharacter.toString();
             default:
                 LOG.error("Invalid argument: " + combination);
                 throw new IllegalArgumentException("Invalid combination: " + combination);
