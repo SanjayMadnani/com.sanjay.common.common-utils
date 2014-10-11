@@ -32,14 +32,14 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.sanjay.common.dto.OutboundDTO;
+import com.sanjay.common.dto.OutboundMail;
 import com.sanjay.common.enumeration.MailTransferProperties;
 
 /**
  * Send mails using SMTP session.
  * 
  * @author sanjay.madnani
- * @see com.sanjay.common.dto.OutboundDTO
+ * @see com.sanjay.common.dto.OutboundMail
  */
 public class OutboundMailUtil {
     private static final Logger LOG = LogManager.getLogger(OutboundMailUtil.class);
@@ -56,27 +56,27 @@ public class OutboundMailUtil {
     /**
      * Create a Simple Mail transfer mail protocol session required for sending mail.
      * 
-     * @param outboundDTO keeps details like id, password, host, port and so on.
-     *            {@link com.sanjay.common.dto.OutboundDTO#OutboundDTO(String, String, String, String, MailTransferProperties, MailTransferProperties, MailTransferProperties)}
+     * @param OutboundMail keeps details like id, password, host, port and so on.
+     *            {@link com.sanjay.common.dto.OutboundMail}
      * @return smtpSession javax.mail.Session
      */
-    public Session getSmtpSession(final OutboundDTO outboundDTO) {
-        LOG.trace("Invoking getSmtpSession by providing details: " + outboundDTO.toString() + " ...");
-        this.smtpUserId = outboundDTO.getSmtpUserId();
+    public Session getSmtpSession(final OutboundMail outboundMail) {
+        LOG.trace("Invoking getSmtpSession by providing details: " + outboundMail.toString() + " ...");
+        this.smtpUserId = outboundMail.getSmtpUserId();
         Properties props = new Properties();
-        props.put("mail.smtp.host", outboundDTO.getSmtpHost());
-        props.put("mail.smtp.auth", outboundDTO.getSmtpAuth().strMailTransferProperty());
-        props.put("mail.debug", outboundDTO.getDebugMode().strMailTransferProperty());
-        props.put("mail.smtp.ssl.enable", outboundDTO.getSmtpSslEnable().strMailTransferProperty());
-        props.put("mail.smtp.starttls.enable", outboundDTO.getSmtpStarttlsEnable().strMailTransferProperty());
-        props.put("mail.smtp.port", outboundDTO.getSmtpPort());
-        if (outboundDTO.getSmtpStarttlsEnable() == MailTransferProperties.FALSE &&
-                outboundDTO.getSmtpSslEnable() == MailTransferProperties.TRUE) {
+        props.put("mail.smtp.host", outboundMail.getSmtpHost());
+        props.put("mail.smtp.auth", outboundMail.getSmtpAuth().strMailTransferProperty());
+        props.put("mail.debug", outboundMail.getDebugMode().strMailTransferProperty());
+        props.put("mail.smtp.ssl.enable", outboundMail.getSmtpSslEnable().strMailTransferProperty());
+        props.put("mail.smtp.starttls.enable", outboundMail.getSmtpStarttlsEnable().strMailTransferProperty());
+        props.put("mail.smtp.port", outboundMail.getSmtpPort());
+        if (outboundMail.getSmtpStarttlsEnable() == MailTransferProperties.FALSE &&
+                outboundMail.getSmtpSslEnable() == MailTransferProperties.TRUE) {
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         }
         return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(smtpUserId, outboundDTO.getSmtpUserPassword());
+                return new PasswordAuthentication(smtpUserId, outboundMail.getSmtpUserPassword());
             }
         });
     }

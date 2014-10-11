@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * @author sanjay.madnani
+ * @author SANJAY
  * 
  */
 public class FileTransferProtocolTest {

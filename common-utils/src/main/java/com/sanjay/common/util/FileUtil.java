@@ -155,9 +155,9 @@ public final class FileUtil {
     /**
      * Transfer a file to remote destination via JSCH library using sFTP protocol
      * 
-     * @param String remote SFTP server user name.
-     * @param String remote SFTP server user password
-     * @param String remote SFTP server IP address or host name.
+     * @param username String remote SFTP server user name.
+     * @param password String remote SFTP server user password
+     * @param host String remote SFTP server IP address or host name.
      * @param file File to transfer to SFTP Server.
      * @param transferProtocol protocol to transfer a file. {@link FileTransferProtocol}
      * @return boolean true if file is transfered otherwise false.
@@ -202,7 +202,7 @@ public final class FileUtil {
      * Copy a source file to a destination directory.
      * 
      * @param srcFile File to copy.
-     * @param File destLocation to keep a copy.
+     * @param destLocation File destLocation to keep a copy.
      * @return boolean true if file is copied else false.
      * @throws IOException
      */

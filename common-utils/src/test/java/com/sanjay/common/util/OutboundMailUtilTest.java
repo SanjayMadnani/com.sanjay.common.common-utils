@@ -4,14 +4,22 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.mail.MessagingException;
 import javax.mail.Session;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.sanjay.common.dto.OutboundMail;
+import com.sanjay.common.enumeration.MailTransferProperties;
 
 /**
  * @author sanjay.madnani
@@ -20,7 +28,7 @@ import org.junit.BeforeClass;
 public class OutboundMailUtilTest {
 
     private static OutboundMailUtil mailUtil;
-    private static Session session;
+    private static OutboundMail outboundMail;
 
     /**
      * @throws java.lang.Exception
@@ -28,6 +36,12 @@ public class OutboundMailUtilTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         mailUtil = new OutboundMailUtil();
+        outboundMail =
+                new OutboundMail.OutboundMailBuilder().smtpUserId("Javacode.study@gmail.com")
+                        .smtpUserPassword("codestudy").smtpHost("smtp.gmail.com").smtpPort("465")
+                        .smtpAuth(MailTransferProperties.TRUE).smtpSslEnable(MailTransferProperties.TRUE)
+                        .smtpStarttlsEnable(MailTransferProperties.FALSE).debugMode(MailTransferProperties.FALSE)
+                        .build();
     }
 
     /**
@@ -36,32 +50,22 @@ public class OutboundMailUtilTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         mailUtil = null;
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        if (session == null) {
-            session = null;
-        }
+        outboundMail = null;
     }
 
     /**
-     * TODO
      * Test method for
      * {@link com.sanjay.common.util.OutboundMailUtil#getSmtpSession(java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties)}
      * .
      */
-    // @Test
+    @Test
     public final void testGetSmtpSession() {
-        session = null;
-        // mailUtil.getSmtpSession("username@gmail.com", "password", "smtp.gmail.com", "587",
-        // MailTransferProperties.TRUE, MailTransferProperties.FALSE, MailTransferProperties.TRUE,
-        // MailTransferProperties.TRUE);
-        assertTrue(session.getDebug());
+        Session session = mailUtil.getSmtpSession(outboundMail);
+        assertFalse(session.getDebug());
         assertEquals("smtp.gmail.com", session.getProperty("mail.smtp.host"));
-        assertEquals("mail.smtp.port", session.getProperty("587"));
-        assertEquals("mail.smtp.starttls.enable", session.getProperty("true"));
-        assertEquals("mail.smtp.ssl.enable", session.getProperty("false"));
+        assertEquals("465", session.getProperty("mail.smtp.port"));
+        assertEquals("false", session.getProperty("mail.smtp.starttls.enable"));
+        assertEquals("true", session.getProperty("mail.smtp.ssl.enable"));
         assertEquals("true", session.getProperty("mail.smtp.auth"));
     }
 
@@ -69,10 +73,22 @@ public class OutboundMailUtilTest {
      * Test method for
      * {@link com.sanjay.common.util.OutboundMailUtil#sendMail(javax.mail.Session, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.String, java.io.File)}
      * .
+     * 
+     * @throws MessagingException
      */
-    // @Test
-    public final void testSendMail() {
-        fail("Not yet implemented");
+    @Test
+    public final void testSendMail() throws MessagingException {
+        Session session = mailUtil.getSmtpSession(outboundMail);
+        List<String> toList = new ArrayList<String>();
+        toList.add("sanjay.madnani@outlook.com");
+        List<String> ccList = new ArrayList<String>();
+        ccList.add("sanjay_madnani2006@yahoo.com");
+        List<String> bccList = new ArrayList<String>();
+        bccList.add("its.sanjay.madnani@gmail.com");
+        String msgSubject = "Java JUnit test case";
+        String msgBody = "Ignore this mail after reciving.<br/><b>Just for testing purpose only.</b>";
+        File file = null;
+        assertTrue(mailUtil.sendMail(session, toList, ccList, bccList, msgSubject, msgBody, file));
     }
 
 }
