@@ -44,6 +44,13 @@ import com.sanjay.common.exception.ApplicationSeverity;
 public final class FileUtil {
     private static final Logger LOGGER = LogManager.getLogger(FileUtil.class);
 
+    /**
+     * Private Constructor to avoid object creation.
+     */
+    private FileUtil() {
+
+    }
+
     private static boolean isValidOperation(final File file) {
         LOGGER.trace("Invoking isValidOperation...");
         if (file != null && file.exists() && file.isFile()) {
@@ -163,8 +170,9 @@ public final class FileUtil {
      * @return boolean true if file is transfered otherwise false.
      * @throws ApplicationException
      */
-    public boolean transferFile(final String username, final String password, final String host, final File file,
-                                final FileTransferProtocol transferProtocol) throws ApplicationException {
+    public static boolean transferFile(final String username, final String password, final String host,
+                                       final File file, final FileTransferProtocol transferProtocol)
+        throws ApplicationException {
         // currently can deal with sftp only.
         LOGGER.trace("Invoking transferFile...");
         JSch jsch = new JSch();

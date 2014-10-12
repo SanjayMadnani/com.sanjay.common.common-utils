@@ -10,8 +10,8 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -19,6 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sanjay.common.enumeration.FileTransferProtocol;
 import com.sanjay.common.exception.ApplicationException;
 
 /**
@@ -71,12 +72,43 @@ public class FileUtilTest {
     }
 
     /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#getFileSize(java.io.File)}.
+     */
+    @Test
+    public final void testGetFileSizeNull() {
+        assertNull(FileUtil.getFileSize(null));
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#getFileSize(java.io.File)}.
+     */
+    @Test
+    public final void testGetFileSizeMB() {
+        String fileSize = FileUtil.getFileSize(new File(inputFileDir, "AF103733479.PDF"));
+        System.out.println("File Size: " + fileSize);
+        assertEquals("1 MB", fileSize);
+    }
+
+    /**
+     * Test method for {@link com.sanjay.common.util.FileUtil#getFileSize(java.io.File)}.
+     */
+    @Test
+    public final void testGetFileSizeBytes() {
+        String fileSize = FileUtil.getFileSize(new File(inputFileDir, "bytes.txt"));
+        System.out.println("File Size: " + fileSize);
+        assertEquals("14 bytes", fileSize);
+    }
+
+    /**
      * Test method for {@link com.sanjay.common.util.FileUtil#transferFile(java.io.File)}.
      */
-    // @Test
+    @Test
     public final void testTransferFile() {
-        // TODO FTP Server required to test file transfer functionality.
-        fail("Not yet implemented");
+        try {
+            FileUtil.transferFile(null, null, null, inputFile, FileTransferProtocol.SFTP);
+        } catch (ApplicationException ex) {
+            assertEquals("host must not be null.", ex.getErrorKey());
+        }
     }
 
     /**
@@ -88,6 +120,12 @@ public class FileUtilTest {
         assertTrue(file.exists());
         assertEquals(outputZipFile.getName(), file.getName());
         assertEquals(outputZipFile.getParent(), file.getParent());
+        File file2 = new File("Z:/xyz/abc");
+        try {
+            FileUtil.compressToGzipFormat(file2, outputFileDir);
+        } catch (ApplicationException e) {
+            assertEquals(file2.getAbsolutePath() + " (The system cannot find the path specified)", e.getErrorKey());
+        }
     }
 
     /**
@@ -101,6 +139,13 @@ public class FileUtilTest {
         assertTrue(file.exists());
         assertEquals(outputFile.getName(), file.getName());
         assertEquals(outputFile.getParent(), file.getParent());
+
+        File file2 = new File("Z:/xyz/abc");
+        try {
+            FileUtil.decompressGzipFile(file2, outputFileDir);
+        } catch (ApplicationException e) {
+            assertEquals(file2.getAbsolutePath() + " (The system cannot find the path specified)", e.getErrorKey());
+        }
     }
 
     /**
