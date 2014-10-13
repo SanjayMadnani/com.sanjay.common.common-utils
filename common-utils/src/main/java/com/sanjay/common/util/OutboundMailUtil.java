@@ -56,7 +56,7 @@ public class OutboundMailUtil {
     /**
      * Create a Simple Mail transfer mail protocol session required for sending mail.
      * 
-     * @param OutboundMail keeps details like id, password, host, port and so on.
+     * @param outboundMail keeps details like id, password, host, port and so on.
      *            {@link com.sanjay.common.dto.OutboundMail}
      * @return smtpSession javax.mail.Session
      */

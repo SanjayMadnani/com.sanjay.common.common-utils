@@ -107,7 +107,8 @@ public class FileUtilTest {
     }
 
     /**
-     * Test method for {@link com.sanjay.common.util.FileUtil#transferFile(java.io.File)}.
+     * Test method for
+     * {@link com.sanjay.common.util.FileUtil#transferFile(String, String, String, File, FileTransferProtocol)}.
      */
     @Test
     public final void testTransferFile() {
@@ -121,7 +122,7 @@ public class FileUtilTest {
     }
 
     /**
-     * Test method for {@link com.sanjay.common.util.FileUtil#compressToGzipFormat(java.io.File, java.io.File)}.
+     * Test method for {@link com.sanjay.common.util.FileUtil#compressToGzipFormat(File, String)}.
      */
     @Test
     public final void testCompressToGzipFormat() throws Exception {
@@ -141,7 +142,7 @@ public class FileUtilTest {
     }
 
     /**
-     * Test method for {@link com.sanjay.common.util.FileUtil#decompressGzipFile(java.io.File, java.io.File)}.
+     * Test method for {@link com.sanjay.common.util.FileUtil#decompressGzipFile(File, String)}.
      * 
      * @throws ApplicationException
      */

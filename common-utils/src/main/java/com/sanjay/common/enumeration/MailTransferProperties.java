@@ -13,7 +13,7 @@ package com.sanjay.common.enumeration;
  * Contains String representation of boolean properties required for sending a mail.
  * 
  * @author sanjay.madnani
- * @see com.sanjay.common.dto.OutboundDTO
+ * @see com.sanjay.common.dto.OutboundMail
  * @see com.sanjay.common.util.OutboundMailUtil
  */
 public enum MailTransferProperties {

@@ -26,7 +26,7 @@ public class FileTransferProtocolTest {
     private static final Logger LOGGER = LogManager.getLogger(FileTransferProtocolTest.class);
 
     /**
-     * Test method for {@link com.sanjay.common.enumeration.FileTransferProtocol#ftpTypeStringRepresentation()}.
+     * Test method for {@link com.sanjay.common.enumeration.FileTransferProtocol#ftpStringRepresentation()}.
      */
     @Test
     public final void testFtpStringRepresentation() {

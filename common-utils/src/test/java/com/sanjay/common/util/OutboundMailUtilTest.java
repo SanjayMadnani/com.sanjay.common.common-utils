@@ -68,9 +68,7 @@ public class OutboundMailUtilTest {
     }
 
     /**
-     * Test method for
-     * {@link com.sanjay.common.util.OutboundMailUtil#getSmtpSession(java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties, com.sanjay.common.enumeration.MailTransferProperties)}
-     * .
+     * Test method for {@link com.sanjay.common.util.OutboundMailUtil#getSmtpSession(OutboundMail)} .
      */
     @Test
     public final void testGetSmtpSession() {
