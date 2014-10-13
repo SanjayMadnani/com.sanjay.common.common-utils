@@ -15,11 +15,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,6 +38,7 @@ import com.sanjay.common.enumeration.MailTransferProperties;
  */
 public class OutboundMailUtilTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(OutboundMailUtilTest.class);
     private static OutboundMailUtil mailUtil;
     private static OutboundMail outboundMail;
 
@@ -43,13 +47,14 @@ public class OutboundMailUtilTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+        LOGGER.trace("Invoking setUpBeforeClass...");
         mailUtil = new OutboundMailUtil();
         outboundMail =
-                new OutboundMail.OutboundMailBuilder().smtpUserId("Javacode.study@gmail.com")
-                        .smtpUserPassword("codestudy").smtpHost("smtp.gmail.com").smtpPort("465")
-                        .smtpAuth(MailTransferProperties.TRUE).smtpSslEnable(MailTransferProperties.TRUE)
-                        .smtpStarttlsEnable(MailTransferProperties.FALSE).debugMode(MailTransferProperties.FALSE)
-                        .build();
+                new OutboundMail.OutboundMailBuilder().smtpUserId("").smtpUserPassword("").smtpHost("smtp.gmail.com")
+                        .smtpPort("465").smtpAuth(MailTransferProperties.TRUE)
+                        .smtpSslEnable(MailTransferProperties.TRUE).smtpStarttlsEnable(MailTransferProperties.FALSE)
+                        .debugMode(MailTransferProperties.FALSE).build();
+        LOGGER.debug("outboundMail Obj constructed: " + outboundMail.toString());
     }
 
     /**
@@ -57,6 +62,7 @@ public class OutboundMailUtilTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
+        LOGGER.trace("Invoking tearDownAfterClass...");
         mailUtil = null;
         outboundMail = null;
     }
@@ -68,6 +74,7 @@ public class OutboundMailUtilTest {
      */
     @Test
     public final void testGetSmtpSession() {
+        LOGGER.trace("Invoking testGetSmtpSession...");
         Session session = mailUtil.getSmtpSession(outboundMail);
         assertFalse(session.getDebug());
         assertEquals("smtp.gmail.com", session.getProperty("mail.smtp.host"));
@@ -84,8 +91,9 @@ public class OutboundMailUtilTest {
      * 
      * @throws MessagingException
      */
-    @Test
+    // @Test
     public final void testSendMail() {
+        LOGGER.trace("Invoking testSendMail...");
         Session session = mailUtil.getSmtpSession(outboundMail);
         List<String> toList = new ArrayList<String>();
         toList.add("sanjay.madnani@outlook.com");
@@ -95,7 +103,12 @@ public class OutboundMailUtilTest {
         bccList.add("its.sanjay.madnani@gmail.com");
         String msgSubject = "Java JUnit test case";
         String msgBody = "Ignore this mail after reciving.<br/><b>Just for testing purpose only.</b>";
-        File file = null;
+        File file = new File("src/test/resources/FileOperation/InputFile", "bytes.txt");
+        Arrays.toString(toList.toArray());
+        toList.toArray();
+        LOGGER.debug("Invoking send mail with parameter: toList: " + Arrays.toString(toList.toArray()) + ", ccList: " +
+                Arrays.toString(ccList.toArray()) + ", bccList: " + Arrays.toString(bccList.toArray()) +
+                ", msgSubject: " + msgSubject + ", msgBody: " + msgBody + ", file: " + file.getAbsolutePath());
         try {
             assertTrue(mailUtil.sendMail(session, toList, ccList, bccList, msgSubject, msgBody, file));
         } catch (MessagingException ex) {
