@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sanjay.util.common-utils</groupId>
 	<artifactId>common-utils</artifactId>
-	<version>0.9-Pre-Final</version>
+	<version>1.0-Final</version>
 	<name>common-utils</name>
 	<description>Common utilities as general requirements of Java projects.</description>
 

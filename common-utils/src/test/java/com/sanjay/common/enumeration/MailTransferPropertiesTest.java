@@ -9,12 +9,10 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.enumeration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 /**
@@ -25,11 +23,14 @@ import org.junit.Test;
  */
 public class MailTransferPropertiesTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(MailTransferPropertiesTest.class);
+
     /**
      * Test method for {@link com.sanjay.common.enumeration.MailTransferProperties#strMailTransferProperty()}.
      */
     @Test
     public void testStrMailTransferProperty() {
+        LOGGER.trace("Invoking testStrMailTransferProperty...");
         assertEquals("true", MailTransferProperties.TRUE.strMailTransferProperty());
         assertEquals("false", MailTransferProperties.FALSE.strMailTransferProperty());
     }

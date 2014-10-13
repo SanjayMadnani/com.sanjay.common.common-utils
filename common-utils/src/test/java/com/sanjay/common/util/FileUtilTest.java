@@ -10,11 +10,14 @@
 package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +32,7 @@ import com.sanjay.common.exception.ApplicationException;
  * 
  */
 public class FileUtilTest {
-
+    private static final Logger LOGGER = LogManager.getLogger(FileUtilTest.class);
     private File inputFile;
     private File outputFile;
     private File inputZipFile;
@@ -66,8 +69,9 @@ public class FileUtilTest {
      */
     @Test
     public final void testGetFileSize() {
+        LOGGER.trace("Invoking testGetFileSize...");
         String fileSize = FileUtil.getFileSize(inputFile);
-        System.out.println("File Size: " + fileSize);
+        LOGGER.debug("File Size: " + fileSize);
         assertEquals("17 KB", fileSize);
     }
 
@@ -76,6 +80,7 @@ public class FileUtilTest {
      */
     @Test
     public final void testGetFileSizeNull() {
+        LOGGER.trace("Invoking testGetFileSizeNull...");
         assertNull(FileUtil.getFileSize(null));
     }
 
@@ -84,8 +89,9 @@ public class FileUtilTest {
      */
     @Test
     public final void testGetFileSizeMB() {
+        LOGGER.trace("Invoking testGetFileSizeMB...");
         String fileSize = FileUtil.getFileSize(new File(inputFileDir, "AF103733479.PDF"));
-        System.out.println("File Size: " + fileSize);
+        LOGGER.debug("File Size: " + fileSize);
         assertEquals("1 MB", fileSize);
     }
 
@@ -94,8 +100,9 @@ public class FileUtilTest {
      */
     @Test
     public final void testGetFileSizeBytes() {
+        LOGGER.trace("Invoking testGetFileSizeBytes...");
         String fileSize = FileUtil.getFileSize(new File(inputFileDir, "bytes.txt"));
-        System.out.println("File Size: " + fileSize);
+        LOGGER.debug("File Size: " + fileSize);
         assertEquals("14 bytes", fileSize);
     }
 
@@ -104,9 +111,11 @@ public class FileUtilTest {
      */
     @Test
     public final void testTransferFile() {
+        LOGGER.trace("Invoking testTransferFile...");
         try {
             FileUtil.transferFile(null, null, null, inputFile, FileTransferProtocol.SFTP);
         } catch (ApplicationException ex) {
+            LOGGER.debug("host must not be null.", ex.getErrorKey());
             assertEquals("host must not be null.", ex.getErrorKey());
         }
     }
@@ -116,13 +125,16 @@ public class FileUtilTest {
      */
     @Test
     public final void testCompressToGzipFormat() throws Exception {
+        LOGGER.trace("Invoking testCompressToGzipFormat...");
         final File file = FileUtil.compressToGzipFormat(inputFile, outputFileDir);
+        LOGGER.debug("File Compressed : " + inputFile.getAbsolutePath() + " to Dir: " + outputFileDir);
         assertTrue(file.exists());
         assertEquals(outputZipFile.getName(), file.getName());
         assertEquals(outputZipFile.getParent(), file.getParent());
         File file2 = new File("Z:/xyz/abc");
         try {
             FileUtil.compressToGzipFormat(file2, outputFileDir);
+            LOGGER.debug("File Compressed : " + file2.getAbsolutePath() + " to Dir: " + outputFileDir);
         } catch (ApplicationException e) {
             assertNotNull(e.getErrorKey());
         }
@@ -135,7 +147,9 @@ public class FileUtilTest {
      */
     @Test
     public final void testDecompressGzipFile() throws ApplicationException {
+        LOGGER.trace("Invoking testDecompressGzipFile...");
         File file = FileUtil.decompressGzipFile(inputZipFile, outputFileDir);
+        LOGGER.debug("Decompressed File: " + inputZipFile.getAbsolutePath() + " to Dir: " + outputFileDir);
         assertTrue(file.exists());
         assertEquals(outputFile.getName(), file.getName());
         assertEquals(outputFile.getParent(), file.getParent());
@@ -143,6 +157,7 @@ public class FileUtilTest {
         File file2 = new File("Z:/xyz/abc");
         try {
             FileUtil.decompressGzipFile(file2, outputFileDir);
+            LOGGER.debug("Decompressed File: " + inputZipFile.getAbsolutePath() + " to Dir: " + outputFileDir);
         } catch (ApplicationException e) {
             assertNotNull(e.getErrorKey());
         }
@@ -153,7 +168,10 @@ public class FileUtilTest {
      */
     @Test
     public final void testDeleteFile() {
+        LOGGER.trace("Invoking testDeleteFile...");
+        LOGGER.debug("Delete File: " + outputFile.getAbsolutePath());
         FileUtil.deleteFile(outputFile);
+        LOGGER.debug("Delete File: " + outputZipFile.getAbsolutePath());
         FileUtil.deleteFile(outputZipFile);
     }
 
@@ -164,7 +182,12 @@ public class FileUtilTest {
      */
     @Test
     public final void testCopyFile() throws Exception {
+        LOGGER.trace("Invoking testCopyFile...");
+        LOGGER.debug("Source File: " + inputFile.getAbsolutePath() + ", Destination: " +
+                outputFile.getParentFile().getAbsolutePath());
         assertTrue(FileUtil.copyFile(inputFile, outputFile.getParentFile()));
+        LOGGER.debug("Source File: " + inputZipFile.getAbsolutePath() + ", Destination: " +
+                outputZipFile.getParentFile().getAbsolutePath());
         assertTrue(FileUtil.copyFile(inputZipFile, outputZipFile.getParentFile()));
     }
 }

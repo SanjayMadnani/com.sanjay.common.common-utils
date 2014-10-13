@@ -9,10 +9,13 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +30,7 @@ import com.sanjay.common.exception.ApplicationException;
  */
 public class BundleUtilTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(BundleUtilTest.class);
     private BundleUtil bundleUtil;
     private BundleUtil bundleUtil2;
 
@@ -55,6 +59,7 @@ public class BundleUtilTest {
      */
     @Test
     public void testBundleUtil() {
+        LOGGER.trace("Invoking testBundleUtil...");
         try {
             new BundleUtil("common-messages");
         } catch (ApplicationException e) {
@@ -69,6 +74,7 @@ public class BundleUtilTest {
      */
     @Test
     public void testBundleUtilStringLocale() {
+        LOGGER.trace("Invoking testBundleUtilStringLocale...");
         try {
             new BundleUtil("common-messages", Locale.getDefault());
         } catch (ApplicationException e) {
@@ -83,6 +89,7 @@ public class BundleUtilTest {
      */
     @Test
     public void testGetStringMessage() throws ApplicationException {
+        LOGGER.trace("Invoking testGetStringMessage...");
         assertEquals("MOBILE1000: Mobile Number is Invalid.", bundleUtil.getStringMessage("ERROR.MOBILE.1000"));
         assertEquals("MOBILE1000: Mobile Number is Invalid.", bundleUtil2.getStringMessage("ERROR.MOBILE.1000"));
         try {
@@ -101,6 +108,7 @@ public class BundleUtilTest {
      */
     @Test
     public void testGetFormatedMessage() throws ApplicationException {
+        LOGGER.trace("Invoking testGetFormatedMessage...");
         String actualResult = bundleUtil.getFormatedMessage("ACK.SUCCESS.1000", "user1", "454585");
         String expectedResult = "Dear user1, Your Registration Id is 454585.";
         assertEquals(expectedResult, actualResult);

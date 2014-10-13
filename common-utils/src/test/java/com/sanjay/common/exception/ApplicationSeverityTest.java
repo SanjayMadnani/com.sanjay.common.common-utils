@@ -10,12 +10,10 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.exception;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 /**
@@ -26,11 +24,14 @@ import org.junit.Test;
  */
 public class ApplicationSeverityTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationSeverityTest.class);
+
     /**
      * Test case for {@link ApplicationSeverity}.
      */
     @Test
-    public void test() {
+    public void testApplicationSeverity() {
+        LOGGER.trace("Invoking testApplicationSeverity...");
         assertEquals("DEBUG", ApplicationSeverity.DEBUG.name());
         assertEquals("INFO", ApplicationSeverity.INFO.name());
         assertEquals("WARN", ApplicationSeverity.WARN.name());

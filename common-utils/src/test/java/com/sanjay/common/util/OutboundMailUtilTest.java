@@ -96,11 +96,11 @@ public class OutboundMailUtilTest {
         LOGGER.trace("Invoking testSendMail...");
         Session session = mailUtil.getSmtpSession(outboundMail);
         List<String> toList = new ArrayList<String>();
-        toList.add("sanjay.madnani@outlook.com");
+        toList.add("");
         List<String> ccList = new ArrayList<String>();
-        ccList.add("sanjay_madnani2006@yahoo.com");
+        ccList.add("");
         List<String> bccList = new ArrayList<String>();
-        bccList.add("its.sanjay.madnani@gmail.com");
+        bccList.add("");
         String msgSubject = "Java JUnit test case";
         String msgBody = "Ignore this mail after reciving.<br/><b>Just for testing purpose only.</b>";
         File file = new File("src/test/resources/FileOperation/InputFile", "bytes.txt");

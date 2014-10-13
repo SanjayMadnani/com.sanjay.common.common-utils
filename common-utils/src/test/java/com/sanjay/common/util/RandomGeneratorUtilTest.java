@@ -9,7 +9,9 @@
  * See the GNU General Public License V2 for more details. */
 package com.sanjay.common.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +27,6 @@ import com.sanjay.common.util.RandomGeneratorUtil.CombinationOf;
  * 
  */
 public class RandomGeneratorUtilTest {
-
     private static final Logger LOG = LogManager.getLogger(RandomGeneratorUtilTest.class);
 
     /**

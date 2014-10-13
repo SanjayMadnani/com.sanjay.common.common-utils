@@ -12,6 +12,8 @@ package com.sanjay.common.enumeration;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 /**
@@ -21,11 +23,14 @@ import org.junit.Test;
  * 
  */
 public class FileTransferProtocolTest {
+    private static final Logger LOGGER = LogManager.getLogger(FileTransferProtocolTest.class);
+
     /**
      * Test method for {@link com.sanjay.common.enumeration.FileTransferProtocol#ftpTypeStringRepresentation()}.
      */
     @Test
     public final void testFtpStringRepresentation() {
+        LOGGER.trace("Invoking testFtpStringRepresentation...");
         assertEquals("sftp", FileTransferProtocol.SFTP.ftpStringRepresentation());
     }
 
@@ -35,6 +40,7 @@ public class FileTransferProtocolTest {
      */
     @Test
     public final void testValueOfFtpStringRepresentation() {
+        LOGGER.trace("Invoking testValueOfFtpStringRepresentation...");
         assertEquals(FileTransferProtocol.SFTP, FileTransferProtocol.valueOfFtpStringRepresentation("sftp"));
     }
 

@@ -11,6 +11,8 @@ package com.sanjay.common.util;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +24,7 @@ import org.junit.Test;
  * 
  */
 public class PropertyUtilTest {
-
+    private static final Logger LOGGER = LogManager.getLogger(PropertyUtilTest.class);
     private PropertyUtil propertyUtil1;
     private PropertyUtil propertyUtil2;
 
@@ -49,6 +51,7 @@ public class PropertyUtilTest {
      */
     @Test
     public void testGetValue() {
+        LOGGER.trace("Invoking testGetValue...");
         assertEquals("smtp.yahoo.com", propertyUtil1.getValue("email.smpt.host"));
         assertEquals("smtp.yahoo.com", propertyUtil2.getValue("email.smpt.host"));
     }
